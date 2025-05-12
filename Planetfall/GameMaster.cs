@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Sources;
 
 namespace Planetfall
 {
@@ -56,10 +58,120 @@ namespace Planetfall
             }
         }
 
+        public static List<Outfit> GetStartOutfits(string faction, string diff)
+        {
+            var outfits = new List<Outfit>();
+
+            switch (faction)
+            {
+                case "TR":
+                    switch (diff)
+                    {
+                        case "Easy":
+                            outfits.Add(new Outfit { Name = "TR Easy 1", Tag = "TRE1", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Easy 2", Tag = "TRE2", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Easy 3", Tag = "TRE3", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Easy 4", Tag = "TRE4", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Easy 5", Tag = "TRE5", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Easy 6", Tag = "TRE6", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Easy 7", Tag = "TRE7", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            break;
+                        case "Normal":
+                            outfits.Add(new Outfit { Name = "TR Normal 1", Tag = "TRN1", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Normal 2", Tag = "TRN2", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Normal 3", Tag = "TRN3", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Normal 4", Tag = "TRN4", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Normal 5", Tag = "TRN5", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Normal 6", Tag = "TRN6", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Normal 7", Tag = "TRN7", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            break;
+                        case "Hard":
+                            outfits.Add(new Outfit { Name = "TR Hard 1", Tag = "TRH1", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Hard 2", Tag = "TRH2", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Hard 3", Tag = "TRH3", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Hard 4", Tag = "TRH4", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Hard 5", Tag = "TRH5", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Hard 6", Tag = "TRH6", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "TR Hard 7", Tag = "TRH7", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            break;
+                    }
+                    break;
+                case "NC":
+                    switch (diff)
+                    {
+                        case "Easy":
+                            outfits.Add(new Outfit { Name = "NC Easy 1", Tag = "NCE1", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Easy 2", Tag = "NCE2", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Easy 3", Tag = "NCE3", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Easy 4", Tag = "NCE4", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Easy 5", Tag = "NCE5", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Easy 6", Tag = "NCE6", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Easy 7", Tag = "NCE7", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            break;
+                        case "Normal":
+                            outfits.Add(new Outfit { Name = "NC Normal 1", Tag = "NCN1", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Normal 2", Tag = "NCN2", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Normal 3", Tag = "NCN3", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Normal 4", Tag = "NCN4", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Normal 5", Tag = "NCN5", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Normal 6", Tag = "NCN6", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Normal 7", Tag = "NCN7", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            break;
+                        case "Hard":
+                            outfits.Add(new Outfit { Name = "NC Hard 1", Tag = "NCH1", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Hard 2", Tag = "NCH2", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Hard 3", Tag = "NCH3", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Hard 4", Tag = "NCH4", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Hard 5", Tag = "NCH5", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Hard 6", Tag = "NCH6", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "NC Hard 7", Tag = "NCH7", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            break;
+                    }
+                    break;
+                case "VS":
+                    switch (diff)
+                    {
+                        case "Easy":
+                            outfits.Add(new Outfit { Name = "VS Easy 1", Tag = "VSE1", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Easy 2", Tag = "VSE2", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Easy 3", Tag = "VSE3", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Easy 4", Tag = "VSE4", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Easy 5", Tag = "VSE5", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Easy 6", Tag = "VSE6", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Easy 7", Tag = "VSE7", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            break;
+                        case "Normal":
+                            outfits.Add(new Outfit { Name = "VS Normal 1", Tag = "VSN1", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Normal 2", Tag = "VSN2", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Normal 3", Tag = "VSN3", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Normal 4", Tag = "VSN4", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Normal 5", Tag = "VSN5", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Normal 6", Tag = "VSN6", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Normal 7", Tag = "VSN7", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            break;
+                        case "Hard":
+                            outfits.Add(new Outfit { Name = "VS Hard 1", Tag = "VSH1", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Hard 2", Tag = "VSH2", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Hard 3", Tag = "VSH3", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Hard 4", Tag = "VSH4", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Hard 5", Tag = "VSH5", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Hard 6", Tag = "VSH6", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            outfits.Add(new Outfit { Name = "VS Hard 7", Tag = "VSH7", Level = 2, HP = 10, CE_All = 2, TEN_All = 1 });
+                            break;
+                    }
+                    break;
+            }
+
+            return outfits;
+        }
+
 
         private void NewGame()
         {
             Console.Clear();
+
+
+
             /*
             Console.WriteLine("The year is 2855. It has been 10 years since the wormhole to Earth has closed and tensions between the factions have reached a breakpoint years ago. The planet of Auraxis has been devastated by constant warfare between three factions.\n");
             Console.Write("The authoritarian ");
@@ -106,6 +218,7 @@ namespace Planetfall
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Commander ");
             string username = Console.ReadLine();
+
             Console.ResetColor();
             Console.WriteLine("\n-------------------\n");
 
@@ -131,16 +244,17 @@ namespace Planetfall
             Console.Write("Vanu Sovereignty (VS)");
             Console.ResetColor();
             Console.WriteLine(" - \"Technology Equals Might\"");
-            string faction = Console.ReadLine();
+            string choiceFaction = Console.ReadLine();
+            string faction;
             //Console.Clear();
             Console.WriteLine("\n-------------------\n");
 
 
 
-            switch (faction.Trim())
+            switch (choiceFaction.Trim())
             {
                 case "1":
-
+                    faction = "TR";
                     //Console.WriteLine("You were no fool to any delusions of freedom or enlightenment. You knew that what we need in times like these is unity. The NC and VS endanger this expedition and by extension all of humanity. Battle after battle, victory after victory, you rose in the ranks of the republican forces. Many medals and commendations later, you have finally been promoted to Commander. Your comrades in the field will miss you but they know that with you in the command center, you have a shot at total victory. They believe that you can finally end this war and allow us to find a way to reunite with our distant brothers and sisters back on Earth.");
                     //Console.WriteLine("You wake up from your daydream to a message on your console. It's the official message from the upper ranks.");
                     //Console.ForegroundColor = ConsoleColor.Red;
@@ -154,14 +268,14 @@ namespace Planetfall
                     TextFormatting.FormattedText("You remember all the battles you went through. From the beaches of Oshur to the treacherous jungle of Hossin. You have been stuck in sieges for days or have seen them from afar from a bastion fleet carrier. You remember the sweet taste of your first victory and the bitter aftertaste of the first crushing defeat. Thinking back, you think the war you have fought so far was and will stay...", linelength);
                     break;
                 case "2":
-
+                    faction = "NC";
                     Console.WriteLine("PLACEHOLDER: FactionNC");
                     Console.ForegroundColor = ConsoleColor.DarkBlue;
                     Console.WriteLine("You have been granted access to the best mercenaries money can buy! Perform well and the suits will give you a pay raise.");
                     Console.ResetColor();
                     break;
                 case "3":
-
+                    faction = "VS";
                     Console.WriteLine("PLACEHOLDER: FactionVS");
                     Console.ForegroundColor = ConsoleColor.DarkMagenta;
                     Console.WriteLine("The Vanu have chosen you to lead us to enlightenment! We have sacrificed to much to fail now.");
@@ -180,15 +294,18 @@ namespace Planetfall
             Console.WriteLine("\n[1] ...Easy");
             Console.WriteLine("[2] ...Normal");
             Console.WriteLine("[3] ...Hard");
-            string diff = Console.ReadLine();
+            string choiceDiff = Console.ReadLine();
             //Console.Clear();
+            string diff;
+            int nanites = 0;
             Console.WriteLine("\n-------------------\n");
-            switch (faction)
+            switch (choiceFaction)
             {
                 case "1":
-                    switch (diff.Trim())
+                    switch (choiceDiff.Trim())
                     {
                         case "1":
+                            diff = "Easy";
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("Difficulty set to [Easy]\n\n");
                             Console.ResetColor();
@@ -196,10 +313,12 @@ namespace Planetfall
                             TextFormatting.FormattedText("The brass has offered you a leadership position for many different fronts. You have decided to lead the next...", linelength);
                             break;
                         case "2":
+                            diff = "Normal";
                             Console.WriteLine("Difficulty set to [Normal]");
                             Console.WriteLine("PLACEHOLDER: FactionTR - DiffNorm");
                             break;
                         case "3":
+                            diff = "Hard";
                             Console.WriteLine("Difficulty set to [Hard]");
                             Console.WriteLine("PLACEHOLDER: FactionTR - DiffHard");
                             break;
@@ -210,9 +329,10 @@ namespace Planetfall
                     }
                     break;
                 case "2":
-                    switch (diff.Trim())
+                    switch (choiceDiff.Trim())
                     {
                         case "1":
+                            diff = "Easy";
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("Difficulty set to [Easy]\n\n");
                             Console.ResetColor();
@@ -221,10 +341,12 @@ namespace Planetfall
                             Console.WriteLine("PLACEHOLDER: FactionNC - DiffEasy");
                             break;
                         case "2":
+                            diff = "Normal";
                             Console.WriteLine("Difficulty set to [Normal]");
                             Console.WriteLine("PLACEHOLDER: FactionNC - DiffNorm");
                             break;
                         case "3":
+                            diff = "Hard";
                             Console.WriteLine("Difficulty set to [Hard]");
                             Console.WriteLine("PLACEHOLDER: FactionNC - DiffHard");
                             break;
@@ -235,9 +357,10 @@ namespace Planetfall
                     }
                     break;
                 case "3":
-                    switch (diff.Trim())
+                    switch (choiceDiff.Trim())
                     {
                         case "1":
+                            diff = "Easy";
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("Difficulty set to [Easy]\n\n");
                             Console.ResetColor();
@@ -246,10 +369,12 @@ namespace Planetfall
                             Console.WriteLine("PLACEHOLDER: FactionVS - DiffEasy");
                             break;
                         case "2":
+                            diff = "Normal";
                             Console.WriteLine("Difficulty set to [Normal]");
                             Console.WriteLine("PLACEHOLDER: FactionVS - DiffNorm");
                             break;
                         case "3":
+                            diff = "Hard";
                             Console.WriteLine("Difficulty set to [Hard]");
                             Console.WriteLine("PLACEHOLDER: FactionVS - DiffHard");
                             break;
@@ -273,11 +398,11 @@ namespace Planetfall
             Console.WriteLine("[3] ...Operation (35 turns)");
             Console.WriteLine("[4] ...Campaign (100 turns)");
             string gameLength = Console.ReadLine();
-            string battleName="";
-            int maxTurns;
+            string battleName = "";
+            int maxTurns=0;
             //Console.Clear();
             Console.WriteLine("\n-------------------\n");
-            switch (faction)
+            switch (choiceFaction)
             {
                 case "1":
                     switch (gameLength)
@@ -432,6 +557,32 @@ namespace Planetfall
 
             Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
+            int score = 0;
+            string obj = "";
+            var gameData = new GameData
+            {
+                PlayerName = username,
+                Faction = choiceFaction,
+                Difficulty = choiceDiff,
+                ActiveObjective = obj,
+                MaxTurns = maxTurns,
+                Score = score,
+                Nanites = nanites,
+                World = new List<Continent>
+                {
+                    new Continent{Name="Indar",PercentOwned=(1/15),ProgressLaneNorth=(1/5),ProgressLaneCentral=(0/5),ProgressLaneSouth=(0 / 5),CentralLaneBonus=false,OwnWarpgateLost=false,NorthEnemyWarpgateCaptured=false,SouthEnemyWarpgateCaptured=false,Locked=false,Captured=false},
+                    new Continent{Name="Esamir",PercentOwned=(1/15),ProgressLaneNorth=(1/5),ProgressLaneCentral=(0/5),ProgressLaneSouth=(0 / 5),CentralLaneBonus=false,OwnWarpgateLost=false,NorthEnemyWarpgateCaptured=false,SouthEnemyWarpgateCaptured=false,Locked=false,Captured=false},
+                    new Continent{Name="Amerish",PercentOwned=(1/15),ProgressLaneNorth=(1/5),ProgressLaneCentral=(0/5),ProgressLaneSouth=(0 / 5),CentralLaneBonus=false,OwnWarpgateLost=false,NorthEnemyWarpgateCaptured=false,SouthEnemyWarpgateCaptured=false,Locked=false,Captured=false}
+                },
+                Forces = new List<Outfit>
+                {
+
+                },
+                Support = new List<Reinforcement>
+                {
+
+                },
+            };
 
             Console.Clear();
             SituationRoom();

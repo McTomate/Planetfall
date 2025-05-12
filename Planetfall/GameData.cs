@@ -15,7 +15,7 @@ namespace Planetfall
         public int MaxTurns { get; set; }
         public int Score { get; set; }
         public int Nanites { get; set; }
-        public List<string> Continents { get; set; }
+        public List<Continent> World { get; set; }
         /*
         public int PercentIndar { get; set; }
         public int PercentEsamir { get; set; }
@@ -37,7 +37,7 @@ namespace Planetfall
         public bool EsamirLocked { get; set; }
         public bool AmerishLocked { get; set; }
         */
-        public List<string> Outfits { get; set; }
+        public List<Outfit> Forces { get; set; }
         /*
         public string Name { get; set; }
         public string Tag { get; set; }
@@ -89,7 +89,7 @@ namespace Planetfall
         public bool UpgradeQrf5 { get; set; }
 
         */
-        public List<string> Reinforcements { get; set; }
+        public List<Reinforcement> Support { get; set; }
         /*
         public int AmountAirSupportRookie { get; set; }
         public int AmountAirSupportTrained { get; set; }
