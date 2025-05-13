@@ -165,6 +165,8 @@ namespace Planetfall
             return outfits;
         }
 
+        private GameData gameData;
+
 
         private void NewGame()
         {
@@ -286,7 +288,7 @@ namespace Planetfall
                     Console.ReadKey();
                     return;
             }
-
+            
             // Placeholder - Update faction in Gamedata Class
 
 
@@ -811,6 +813,7 @@ namespace Planetfall
                         Console.ReadKey();
                         break;
                     case "2": // Placeholder - Pull Outfit data from GameData Class
+                        gameData.DisplayNanites();
                               // Placeholder - Outfit Upgrades
                               // Placeholder - Modify Outfit data
                               // Placeholder - Update Outfit data in GameData

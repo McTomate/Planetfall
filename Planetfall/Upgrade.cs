@@ -22,5 +22,8 @@ namespace Planetfall
             NaniteCost = naniteCost;
         }
 
+       
+        
+
     }
 }

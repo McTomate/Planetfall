@@ -12,6 +12,7 @@ namespace Planetfall
         public string Faction { get; set; }
         public string Difficulty { get; set; }
         public string ActiveObjective { get; set; }
+        public int CurrentTurn { get; set; }
         public int MaxTurns { get; set; }
         public int Score { get; set; }
         public int Nanites { get; set; }
@@ -108,7 +109,48 @@ namespace Planetfall
         public int AmountMaxCrashElite { get; set; }
         */
 
+        public void AddOutfit(Outfit outfit)
+        {
+            Forces.Add(outfit);
+        }
 
+        public bool BuyUpgrade(Outfit outfit, string upgradeTag)
+        {
+            var upgrade = outfit.Upgrades[upgradeTag];
+            if (upgrade.IsBought)
+            {
+                Console.WriteLine("Upgrade already bought.");
+                return false;
+            }
+
+            if (Nanites < upgrade.NaniteCost)
+            {
+                Console.WriteLine("Insufficient Nanites.");
+                return false;
+            }
+
+            Nanites -= upgrade.NaniteCost;
+            upgrade.IsBought = true;
+            Console.WriteLine("Upgrade purchased.");
+            Console.WriteLine($"New balance: {Nanites}");
+            return true;
+
+        }
+
+        public void DisplayNanites()
+        {
+            Console.WriteLine($"Available Nanites: {Nanites}");
+        }
+
+        public void DisplayTurns()
+        {
+            Console.WriteLine($"Turn {CurrentTurn} / {MaxTurns}");
+        }
+
+        public void DisplayObjective()
+        {
+            Console.WriteLine($"Active side objective: {ActiveObjective}");
+        }
 
 
     }
