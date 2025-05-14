@@ -90,7 +90,7 @@ namespace Planetfall
         public bool UpgradeQrf5 { get; set; }
 
         */
-        public List<Reinforcement> Support { get; set; }
+        public List<Favor> Support { get; set; }
         /*
         public int AmountAirSupportRookie { get; set; }
         public int AmountAirSupportTrained { get; set; }
@@ -108,6 +108,7 @@ namespace Planetfall
         public int AmountMaxCrashTrained { get; set; }
         public int AmountMaxCrashElite { get; set; }
         */
+        
 
         public void AddOutfit(Outfit outfit)
         {
@@ -116,7 +117,21 @@ namespace Planetfall
 
         public bool BuyUpgrade(Outfit outfit, string upgradeTag)
         {
+            if (!outfit.Upgrades.ContainsKey(upgradeTag))
+            {
+                Console.WriteLine("Upgrade not found.");
+                return false;
+            }
+
+
             var upgrade = outfit.Upgrades[upgradeTag];
+
+            if (!upgrade.IsShown)
+            {
+                Console.WriteLine("The Outfit has not qualified for this Outfit yet.");
+                return false;
+            }
+
             if (upgrade.IsBought)
             {
                 Console.WriteLine("Upgrade already bought.");
@@ -131,7 +146,70 @@ namespace Planetfall
 
             Nanites -= upgrade.NaniteCost;
             upgrade.IsBought = true;
-            Console.WriteLine("Upgrade purchased.");
+
+
+            switch (upgradeTag)
+            {
+                // BALANCING SUBJECT TO CHANGE
+                case "Lvl1": outfit.ComEffVsAir += 1; break; 
+                case "Lvl2": outfit.CE_All += 1; break;      
+                case "Lvl3": outfit.TEN_All += 1; break;     
+
+                
+                case "Inf1": outfit.ComEffVsInf += 2; outfit.TenVsInf += 1; break; 
+                case "Inf2": outfit.ComEffVsInf += 4; break;                       
+                case "Inf3": outfit.ComEffVsAir += 3; break;                       
+                case "Inf4": outfit.ComEffVsArm += 2; break;                       
+                case "Inf5":
+                    outfit.TEN_All += 2;                                           
+                    outfit.ComEffVsAir += 2;
+                    break;
+
+                
+                case "Arm1": outfit.TEN_All += 2; break;                           
+                case "Arm2": outfit.ComEffVsInf += 2; break;                      
+                case "Arm3":
+                    switch (outfit.Faction)
+                    {
+                        case "TR": outfit.ComEffVsInf += 2; break;
+                        case "NC": outfit.ComEffVsArm += 2; break;
+                        case "VS":
+                            outfit.TenVsInf += 1;
+                            outfit.TenVsArm += 1;
+                            break;
+                    }
+                    break; 
+                case "Arm4": outfit.TenVsAir += 1; break;                          
+                case "Arm5":
+                    outfit.ComEffVsInf += 2;
+                    outfit.ComEffVsArm += 2;
+                    break; 
+
+                
+                case "Air1": outfit.TEN_All += 1; break;                           
+                case "Air2": outfit.ComEffVsArm += 3; break;                       
+                case "Air3":
+                    outfit.ComEffVsArm += 3;
+                    outfit.ComEffVsAir += 3;
+                    outfit.ComEffVsInf -= 2;
+                    break; 
+                case "Air4": outfit.ComEffVsAir += 3; break;                       
+                case "Air5":
+                    outfit.TenVsInf += 3;
+                    outfit.TenVsArm += 3;
+                    break; 
+
+                
+                case "Qrf1": outfit.TenVsAir += 2; break;                          
+                case "Qrf2": outfit.TEN_All += 1; break;                           
+                case "Qrf3": outfit.ComEffVsInf += 2; break;                       
+
+                default:
+                    Console.WriteLine($"No stat effect defined for upgrade {upgradeTag}.");
+                    break;
+            }
+
+            Console.WriteLine("Upgrade purchased.\n");
             Console.WriteLine($"New balance: {Nanites}");
             return true;
 

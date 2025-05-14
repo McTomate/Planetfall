@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Planetfall
 {
-    class Reinforcement
+    class Favor
     {
+        public string Name { get; set; }
+        public string Effect { get; set; }
+        public int Cost { get; set; }
     }
 }

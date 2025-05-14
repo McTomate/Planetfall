@@ -10,12 +10,14 @@ namespace Planetfall
     {
         public string Name { get; set; }
         public string Tag { get; set; }
+        public string Faction { get; set; }
         public int XP { get; set; } = 0;
         public int Level { get; set; } = 1;
         public int HP { get; set; } = 100;
         public int CE_All { get; set; }
         public int TEN_All { get; set; }
         public bool CombatReady => HP > 0;
+        public int Uses { get; set; }
 
         public int ComEffVsInf { get; set; }
         public int ComEffVsArm { get; set; }
@@ -36,6 +38,11 @@ namespace Planetfall
                 {
                     upgrade.IsShown = true;
                 }
+                else
+                {
+                    upgrade.IsShown = false;
+                }
+                
             }
         }
 

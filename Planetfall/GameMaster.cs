@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -288,7 +289,7 @@ namespace Planetfall
                     Console.ReadKey();
                     return;
             }
-            
+
             // Placeholder - Update faction in Gamedata Class
 
 
@@ -298,7 +299,7 @@ namespace Planetfall
             Console.WriteLine("[3] ...Hard");
             string choiceDiff = Console.ReadLine();
             //Console.Clear();
-            string diff;
+            string diff = "";
             int nanites = 0;
             Console.WriteLine("\n-------------------\n");
             switch (choiceFaction)
@@ -308,6 +309,7 @@ namespace Planetfall
                     {
                         case "1":
                             diff = "Easy";
+                            nanites = 750;
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("Difficulty set to [Easy]\n\n");
                             Console.ResetColor();
@@ -316,11 +318,13 @@ namespace Planetfall
                             break;
                         case "2":
                             diff = "Normal";
+                            nanites = 500;
                             Console.WriteLine("Difficulty set to [Normal]");
                             Console.WriteLine("PLACEHOLDER: FactionTR - DiffNorm");
                             break;
                         case "3":
                             diff = "Hard";
+                            nanites = 250;
                             Console.WriteLine("Difficulty set to [Hard]");
                             Console.WriteLine("PLACEHOLDER: FactionTR - DiffHard");
                             break;
@@ -335,6 +339,7 @@ namespace Planetfall
                     {
                         case "1":
                             diff = "Easy";
+                            nanites = 750;
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("Difficulty set to [Easy]\n\n");
                             Console.ResetColor();
@@ -344,11 +349,13 @@ namespace Planetfall
                             break;
                         case "2":
                             diff = "Normal";
+                            nanites = 500;
                             Console.WriteLine("Difficulty set to [Normal]");
                             Console.WriteLine("PLACEHOLDER: FactionNC - DiffNorm");
                             break;
                         case "3":
                             diff = "Hard";
+                            nanites = 250;
                             Console.WriteLine("Difficulty set to [Hard]");
                             Console.WriteLine("PLACEHOLDER: FactionNC - DiffHard");
                             break;
@@ -363,6 +370,7 @@ namespace Planetfall
                     {
                         case "1":
                             diff = "Easy";
+                            nanites = 750;
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("Difficulty set to [Easy]\n\n");
                             Console.ResetColor();
@@ -372,11 +380,13 @@ namespace Planetfall
                             break;
                         case "2":
                             diff = "Normal";
+                            nanites = 500;
                             Console.WriteLine("Difficulty set to [Normal]");
                             Console.WriteLine("PLACEHOLDER: FactionVS - DiffNorm");
                             break;
                         case "3":
                             diff = "Hard";
+                            nanites = 250;
                             Console.WriteLine("Difficulty set to [Hard]");
                             Console.WriteLine("PLACEHOLDER: FactionVS - DiffHard");
                             break;
@@ -391,6 +401,8 @@ namespace Planetfall
 
             }
 
+
+
             //Console.WriteLine("\nSelect game length:\n");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("[0] DEMO: 2 turns\n");
@@ -401,7 +413,7 @@ namespace Planetfall
             Console.WriteLine("[4] ...Campaign (100 turns)");
             string gameLength = Console.ReadLine();
             string battleName = "";
-            int maxTurns=0;
+            int maxTurns = 0;
             //Console.Clear();
             Console.WriteLine("\n-------------------\n");
             switch (choiceFaction)
@@ -561,11 +573,11 @@ namespace Planetfall
             Console.ReadKey();
             int score = 0;
             string obj = "";
-            var gameData = new GameData
+            gameData = new GameData
             {
                 PlayerName = username,
-                Faction = choiceFaction,
-                Difficulty = choiceDiff,
+                Faction = faction,
+                Difficulty = diff,
                 ActiveObjective = obj,
                 MaxTurns = maxTurns,
                 Score = score,
@@ -580,12 +592,12 @@ namespace Planetfall
                 {
 
                 },
-                Support = new List<Reinforcement>
+                Support = new List<Favor>
                 {
 
                 },
             };
-
+            gameData.Forces = GetStartOutfits(faction, diff);
             Console.Clear();
             SituationRoom();
 
@@ -762,6 +774,26 @@ namespace Planetfall
                                 // Placeholder - Option 2: Coordinate with allied Commanders and "buy" their assistance (one time use to be deployed in the battle planning phase (Air support / Tank assault / Galaxy drop / MAX crash); cheaper)
                                 // Placeholder - Update Reinforcement in GameData Class
                                 // Placeholder - Update Outfit in GameData Class
+                        Console.Clear();
+                        Console.WriteLine("[1] Transfer Outfit to your command");
+                        Console.WriteLine("[2] Purchase \"favors\"");
+                        string input = Console.ReadLine();
+
+
+                        switch (input)
+                        {
+                            case "1":
+                                OutfitShop();
+                                break;
+                            case "2":
+                                Console.WriteLine("placeholder");
+                                Console.ReadKey();
+                                break;
+                            default:
+                                Console.WriteLine("Invalid input! Press any key to try again...");
+                                break;
+                        }
+
                         Console.WriteLine("PLACEHOLDER: Reinforcements \"shop\"");
                         Console.WriteLine("Press any key to continue...");
                         Console.ReadKey();
@@ -777,6 +809,150 @@ namespace Planetfall
                         break;
 
                 }
+            }
+        }
+
+        private List<Outfit> OutfitsForSale(string faction)
+        {
+            var outfits = new List<Outfit>();
+
+            switch (faction)
+            {
+                case "TR":
+                    outfits.Add(new Outfit { Name = "TR Extra 1", Tag = "TRX1", Faction = "TR" });
+                    outfits.Add(new Outfit { Name = "TR Extra 2", Tag = "TRX2", Faction = "TR" });
+                    break;
+                case "NC":
+                    outfits.Add(new Outfit { Name = "NC Extra 1", Tag = "NCX1", Faction = "NC" });
+                    outfits.Add(new Outfit { Name = "NC Extra 2", Tag = "NCX2", Faction = "NC" });
+                    break;
+                case "VS":
+                    outfits.Add(new Outfit { Name = "VS Extra 1", Tag = "VSX1", Faction = "VS" });
+                    outfits.Add(new Outfit { Name = "VS Extra 2", Tag = "VSX2", Faction = "VS" });
+                    break;
+            }
+            return outfits;
+        }
+
+        private void OutfitShop()
+        {
+
+
+            bool shopping = true;
+            var options = OutfitsForSale(gameData.Faction);
+            while (shopping)
+            {
+                Console.Clear();
+                gameData.DisplayNanites();
+                Console.WriteLine("\nChoose an Outfit to transfer:");
+                Console.WriteLine("\n\n[0] Exit negotiations\n\n");
+
+
+
+
+                for (int i = 0; i < options.Count; i++)
+                {
+                    Console.WriteLine($"[{i + 1}] - {options[i].Name} [{options[i].Tag}] - Cost: 200 Nanites");
+                }
+
+                string input = Console.ReadLine();
+
+                if (input == "0")
+                    shopping = false;
+                else if (int.TryParse(input, out int index) && index > 0 && index <= options.Count)
+                {
+                    if (gameData.Nanites >= 200)
+                    {
+                        var chosen = options[index - 1];
+                        gameData.Nanites -= 200;
+
+                        chosen.Level = 1;
+                        chosen.HP = 100;
+                        chosen.CE_All = 20;
+                        chosen.TEN_All = 10;
+
+                        gameData.Forces.Add(chosen);
+
+                        options.Remove(chosen);
+
+                        Console.WriteLine($"Command over {chosen.Tag} has been transfered to you.");
+                        Console.WriteLine("Press any key to continue...");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Insufficient Nanites! Press any key to continue...");
+                        Console.ReadKey();
+
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Press any key to try again...");
+                    Console.ReadKey();
+                }
+
+
+
+            }
+        }
+
+        private void FavorShop()
+        {
+            bool shopping = true;
+
+            var offers = new List<Favor>
+            {
+                new Favor { Name = "Galaxy Drop", Effect = "Light infantry air landing", Cost = 50 },
+                new Favor { Name = "Artillery Barrage", Effect = "Armored convoy HE shelling", Cost = 50 },
+                new Favor { Name = "MAX Crash", Effect = "Mechsuit infantry assault", Cost = 100 },
+                new Favor { Name = "Fighter Wing Deployment", Effect = "Air-To-Air and Air-To-Ground support", Cost = 150 },
+                new Favor { Name = "Railcannon Orbital Strike", Effect = "2t Orbital Strike striking at Mach60", Cost = 200 },
+                new Favor { Name = "Bastion Fleet Carrier Deployment", Effect = "Flying carrier deploying all its air wings", Cost = 350 },
+            };
+
+
+            while (shopping)
+            {
+
+                Console.Clear();
+                gameData.DisplayNanites();
+                Console.WriteLine("\nChoose a Favor to purchase:");
+                Console.WriteLine("\n\n[0] Exit shop\n\n");
+
+                for (int i = 0; i < offers.Count; i++)
+                {
+                    Console.WriteLine($"[{i + 1}] {offers[i].Name} - {offers[i].Cost} Nanites");
+                }
+
+                string input = Console.ReadLine();
+
+                if (input == "0")
+                    shopping = false;
+                else if (int.TryParse(input, out int choice) && choice > 0 && choice <= offers.Count)
+                {
+
+                    var chosen = offers[choice - 1];
+
+                    if (gameData.Nanites >= chosen.Cost)
+                    {
+                        gameData.Nanites -= chosen.Cost;
+                        gameData.Support.Add(chosen);
+                        Console.WriteLine($"You have aquired a new favor. Allied support in form of a \"{chosen.Name}\" can be requested at any time.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Insufficient Nanites.");
+                    }
+                    Console.ReadKey();
+
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input! Press any key to try again...");
+                    Console.ReadKey();
+                }
+
             }
         }
 
@@ -813,13 +989,14 @@ namespace Planetfall
                         Console.ReadKey();
                         break;
                     case "2": // Placeholder - Pull Outfit data from GameData Class
-                        gameData.DisplayNanites();
-                              // Placeholder - Outfit Upgrades
-                              // Placeholder - Modify Outfit data
-                              // Placeholder - Update Outfit data in GameData
-                        Console.WriteLine("PLACEHOLDER: Upgrade \"shop\"");
-                        Console.WriteLine("Press any key to continue...");
-                        Console.ReadKey();
+
+                        // Placeholder - Outfit Upgrades
+                        // Placeholder - Modify Outfit data
+                        // Placeholder - Update Outfit data in GameData
+                        UpgradeShop();
+                        //Console.WriteLine("PLACEHOLDER: Upgrade \"shop\"");
+                        //Console.WriteLine("Press any key to continue...");
+                        //Console.ReadKey();
                         break;
                     case "3":
                         Console.Clear();
@@ -834,6 +1011,82 @@ namespace Planetfall
             }
 
 
+        }
+
+        private void UpgradeShop()
+        {
+            bool shopping = true;
+
+            while (shopping)
+            {
+                Console.Clear();
+                gameData.DisplayNanites();
+
+                Console.WriteLine("\nChoose an Outfit to upgrade:");
+                Console.WriteLine("\n\n[0] Exit shop\n\n");
+
+                for (int i = 0; i < gameData.Forces.Count; i++)
+                {
+                    Console.WriteLine($"[{i + 1}] {gameData.Forces[i].Name}");
+
+                }
+                string input = Console.ReadLine();
+
+                if (input == "0")
+                    shopping = false;
+
+                else if (int.TryParse(input, out int index) && index > 0 && index <= gameData.Forces.Count)
+                {
+                    UpgradeOutfit(gameData.Forces[index - 1]);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input! Press any key to try again...");
+                    Console.ReadKey();
+                }
+
+            }
+        }
+
+        private void UpgradeOutfit(Outfit outfit)
+        {
+            bool upgrading = true;
+            outfit.UpgradeForSale();
+            while (upgrading)
+            {
+                Console.Clear();
+                Console.WriteLine($"Selected Outfit: {outfit.Name}");
+                gameData.DisplayNanites();
+                Console.WriteLine("Select upgrade to purchase:");
+                Console.WriteLine("\n\n[0] Exit shop\n\n");
+
+                int i = 1;
+                var availableUpgrades = outfit.Upgrades.Where(u => !u.Value.IsBought).ToList();
+
+                foreach (var improvement in outfit.Upgrades.Where(u => u.Value.IsShown && !u.Value.IsBought))
+                {
+                    string status = improvement.Value.IsBought ? "[Bought]" : $"Cost: {improvement.Value.NaniteCost} Nanites";
+                    Console.WriteLine($"[{i}] {improvement.Value.Name} ({improvement.Key}) - {status}");
+                    i++;
+                }
+
+                string input = Console.ReadLine();
+
+                if (input == "0")
+                    upgrading = false;
+                else if (int.TryParse(input, out int choice) && choice > 0 && choice <= outfit.Upgrades.Count)
+                {
+                    var key = availableUpgrades[choice - 1].Key;
+                    gameData.BuyUpgrade(outfit, key);
+                    Console.WriteLine("\nPress any key to continue...");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input! Press any key to try again...");
+                    Console.ReadKey();
+                }
+            }
         }
 
         private void EndTurn()
@@ -853,6 +1106,46 @@ namespace Planetfall
             Console.ReadKey();
             SituationRoom();
         }
+
+        private void CallSupport()
+        {
+            if (gameData.Support.Count == 0)
+            {
+                Console.WriteLine("No available favors.");
+                Console.ReadKey();
+                return;
+            }
+
+            Console.WriteLine("Available favors:");
+
+            for (int i = 0; i < gameData.Support.Count; i++)
+            {
+                Console.WriteLine($"[{i+1}] {gameData.Support[i].Name} - Effect: {gameData.Support[i].Effect}");
+
+            }
+
+            Console.WriteLine("\n\nChoose Favor to call in:");
+            string input = Console.ReadLine();
+
+            if (int.TryParse(input, out int index) && index > 0 && index <= gameData.Support.Count)
+            {
+                var favor = gameData.Support[index - 1];
+                Console.WriteLine($"Favor: {favor.Name} will be called in to help in this battle.");
+
+
+                //PLACEHOLDER Effect
+
+
+                gameData.Support.RemoveAt(index - 1);
+                Console.ReadKey();
+
+            }
+
+
+
+        }
+
+
 
         private void Help()
         {
