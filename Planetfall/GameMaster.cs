@@ -584,9 +584,9 @@ namespace Planetfall
                 Nanites = nanites,
                 World = new List<Continent>
                 {
-                    new Continent{Name="Indar",PercentOwned=(1/15),ProgressLaneNorth=(1/5),ProgressLaneCentral=(0/5),ProgressLaneSouth=(0 / 5),CentralLaneBonus=false,OwnWarpgateLost=false,NorthEnemyWarpgateCaptured=false,SouthEnemyWarpgateCaptured=false,Locked=false,Captured=false},
-                    new Continent{Name="Esamir",PercentOwned=(1/15),ProgressLaneNorth=(1/5),ProgressLaneCentral=(0/5),ProgressLaneSouth=(0 / 5),CentralLaneBonus=false,OwnWarpgateLost=false,NorthEnemyWarpgateCaptured=false,SouthEnemyWarpgateCaptured=false,Locked=false,Captured=false},
-                    new Continent{Name="Amerish",PercentOwned=(1/15),ProgressLaneNorth=(1/5),ProgressLaneCentral=(0/5),ProgressLaneSouth=(0 / 5),CentralLaneBonus=false,OwnWarpgateLost=false,NorthEnemyWarpgateCaptured=false,SouthEnemyWarpgateCaptured=false,Locked=false,Captured=false}
+                    new Continent{Name="Indar",PercentOwned=(100/15),ProgressLaneNorth=(1),ProgressLaneCentral=(0),ProgressLaneSouth=(0),CentralLaneBonus=false,OwnWarpgateLost=false,NorthEnemyWarpgateCaptured=false,SouthEnemyWarpgateCaptured=false,Locked=false,Captured=false},
+                    new Continent{Name="Esamir",PercentOwned=(200/15),ProgressLaneNorth=(0),ProgressLaneCentral=(2),ProgressLaneSouth=(0),CentralLaneBonus=false,OwnWarpgateLost=false,NorthEnemyWarpgateCaptured=false,SouthEnemyWarpgateCaptured=false,Locked=false,Captured=false},
+                    new Continent{Name="Amerish",PercentOwned=(300/15),ProgressLaneNorth=(1),ProgressLaneCentral=(1),ProgressLaneSouth=(0),CentralLaneBonus=false,OwnWarpgateLost=false,NorthEnemyWarpgateCaptured=false,SouthEnemyWarpgateCaptured=false,Locked=false,Captured=false}
                 },
                 Forces = new List<Outfit>
                 {
@@ -681,31 +681,31 @@ namespace Planetfall
             Console.WriteLine("Overview:\n");
 
             // Placeholder - JSON implementation with Dynamic data
-            Console.WriteLine("PLACEHOLDER: Dynamic data");
-            Console.WriteLine("Indar: 20%");
-            Console.WriteLine("Esamir: 34%");
-            Console.WriteLine("Amerish: 80%");
-            Console.WriteLine("Nanites: 750");
-            Console.WriteLine("Outfits: 7");
+            //Console.WriteLine("PLACEHOLDER: Dynamic data");
+            Console.WriteLine($"Indar: {gameData.World[0].PercentOwned}%");
+            Console.WriteLine($"Esamir: {gameData.World[1].PercentOwned}%");
+            Console.WriteLine($"Amerish: {gameData.World[2].PercentOwned}%");
+            Console.WriteLine($"Nanites: {gameData.Nanites}");
+            Console.WriteLine($"Outfits: {gameData.Forces.Count}");
             Console.WriteLine("\n==========================================\n");
 
             // Placeholder - Pull Continent and Lane data from GameData Class
             // Placeholder - dynamic maps 
-            Console.WriteLine("PLACEHOLDER: Dynamic maps");
+           // Console.WriteLine("PLACEHOLDER: Dynamic maps");
             Console.WriteLine("Strategic map: Indar");
-            Console.WriteLine("North:     [X]---[ ]---[ ]---[ ]---[ ]");
-            Console.WriteLine("Central:   [X]---[ ]---[ ]---[ ]---[ ]");
-            Console.WriteLine("South:     [X]---[ ]---[ ]---[ ]---[ ]");
+            DisplayLane("North", gameData.World[0].ProgressLaneNorth);
+            DisplayLane("Central", gameData.World[0].ProgressLaneCentral);
+            DisplayLane("South", gameData.World[0].ProgressLaneSouth);
 
             Console.WriteLine("\nStrategic map: Esamir");
-            Console.WriteLine("North:     [X]---[X]---[X]---[ ]---[ ]");
-            Console.WriteLine("Central:   [X]---[ ]---[ ]---[ ]---[ ]");
-            Console.WriteLine("South:     [X]---[ ]---[ ]---[ ]---[ ]");
+            DisplayLane("North", gameData.World[1].ProgressLaneNorth);
+            DisplayLane("Central", gameData.World[1].ProgressLaneCentral);
+            DisplayLane("South", gameData.World[1].ProgressLaneSouth);
 
             Console.WriteLine("\nStrategic map: Amerish");
-            Console.WriteLine("North:     [X]---[X]---[X]---[ ]---[ ]");
-            Console.WriteLine("Central:   [X]---[X]---[X]---[X]---[ ]");
-            Console.WriteLine("South:     [X]---[X]---[X]---[X]---[X]");
+            DisplayLane("North", gameData.World[2].ProgressLaneNorth);
+            DisplayLane("Central", gameData.World[2].ProgressLaneCentral);
+            DisplayLane("South", gameData.World[2].ProgressLaneSouth);
 
             Console.WriteLine("\n==========================================\n");
 
@@ -739,6 +739,19 @@ namespace Planetfall
                     break;
             }
 
+        }
+
+        private void DisplayLane(string location, int progress)
+        {
+            Console.Write($"{location, -10}: ");
+            for(int i = 0; i < 5; i++)
+            {
+                Console.Write(i<progress?"[X]":"[ ]");
+
+                if (i<4)
+                    Console.Write("---");
+            }
+            Console.WriteLine();
         }
 
         private void DiplomacyMod()
@@ -786,17 +799,14 @@ namespace Planetfall
                                 OutfitShop();
                                 break;
                             case "2":
-                                Console.WriteLine("placeholder");
-                                Console.ReadKey();
+                                FavorShop();
                                 break;
                             default:
                                 Console.WriteLine("Invalid input! Press any key to try again...");
                                 break;
                         }
 
-                        Console.WriteLine("PLACEHOLDER: Reinforcements \"shop\"");
-                        Console.WriteLine("Press any key to continue...");
-                        Console.ReadKey();
+
                         break;
                     case "3":
                         Console.Clear();
@@ -1120,7 +1130,7 @@ namespace Planetfall
 
             for (int i = 0; i < gameData.Support.Count; i++)
             {
-                Console.WriteLine($"[{i+1}] {gameData.Support[i].Name} - Effect: {gameData.Support[i].Effect}");
+                Console.WriteLine($"[{i + 1}] {gameData.Support[i].Name} - Effect: {gameData.Support[i].Effect}");
 
             }
 
