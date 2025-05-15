@@ -578,7 +578,7 @@ namespace Planetfall
                 PlayerName = username,
                 Faction = faction,
                 Difficulty = diff,
-                ActiveObjective = obj,
+
                 MaxTurns = maxTurns,
                 Score = score,
                 Nanites = nanites,
@@ -598,6 +598,7 @@ namespace Planetfall
                 },
             };
             gameData.Forces = GetStartOutfits(faction, diff);
+            gameData.AllObjectives = CreateObjectives();
             Console.Clear();
             SituationRoom();
 
@@ -691,7 +692,7 @@ namespace Planetfall
 
             // Placeholder - Pull Continent and Lane data from GameData Class
             // Placeholder - dynamic maps 
-           // Console.WriteLine("PLACEHOLDER: Dynamic maps");
+            // Console.WriteLine("PLACEHOLDER: Dynamic maps");
             Console.WriteLine("Strategic map: Indar");
             DisplayLane("North", gameData.World[0].ProgressLaneNorth);
             DisplayLane("Central", gameData.World[0].ProgressLaneCentral);
@@ -743,12 +744,12 @@ namespace Planetfall
 
         private void DisplayLane(string location, int progress)
         {
-            Console.Write($"{location, -10}: ");
-            for(int i = 0; i < 5; i++)
+            Console.Write($"{location,-10}: ");
+            for (int i = 0; i < 5; i++)
             {
-                Console.Write(i<progress?"[X]":"[ ]");
+                Console.Write(i < progress ? "[X]" : "[ ]");
 
-                if (i<4)
+                if (i < 4)
                     Console.Write("---");
             }
             Console.WriteLine();
@@ -772,21 +773,11 @@ namespace Planetfall
                 string choice = Console.ReadLine();
                 switch (choice.Trim())
                 {
-                    case "1":   //Placeholder - Side objectives
-                                // Placeholder - Show active side objective
-                                // Placeholder - Option 1: Select new objetive
-                                // Placeholder - Option 2: Abort current objective
-                                // Placeholder - Update Objectives in GameData Class
-                        Console.WriteLine("PLACEHOLDER: Side objectives menu");
-                        Console.WriteLine("Press any key to continue...");
-                        Console.ReadKey();
+                    case "1":   //Placeholder - Flavortext
+
+                        ObjectiveManager();
                         break;
-                    case "2":   //Placeholder - Reinforcements
-                                // Placeholder - Pull data from "Shop" List
-                                // Placeholder - Option 1: Assume direct command of Outfits and add to available pool (direct control for the remainder of the game; expensive)
-                                // Placeholder - Option 2: Coordinate with allied Commanders and "buy" their assistance (one time use to be deployed in the battle planning phase (Air support / Tank assault / Galaxy drop / MAX crash); cheaper)
-                                // Placeholder - Update Reinforcement in GameData Class
-                                // Placeholder - Update Outfit in GameData Class
+                    case "2":   //Placeholder - Flavortext
                         Console.Clear();
                         Console.WriteLine("[1] Transfer Outfit to your command");
                         Console.WriteLine("[2] Purchase \"favors\"");
@@ -821,6 +812,108 @@ namespace Planetfall
                 }
             }
         }
+        private List<Objective> CreateObjectives()
+        {
+            return new List<Objective>
+    {
+        new Objective
+        {
+            Name = "Capture the Crown",
+            Details = "Secure the base called 'The Crown' on Indar.",
+            Condition = gameData =>
+                gameData.World.FirstOrDefault(c => c.Name == "Indar")?.ProgressLaneCentral == 100
+        },
+        new Objective
+        {
+            Name = "Destroy 1 enemy Outfit",
+            Details = "Eliminate at least one enemy outfit in battle.",
+            Condition = gameData => gameData.Score >= 10 // Platzhalter
+        },
+        new Objective
+        {
+            Name = "Capture 3 Bases",
+            Details = "Progress on any continent by 3 total sectors.",
+            Condition = gameData =>
+                gameData.World.Sum(Continent => Continent.ProgressLaneNorth + Continent.ProgressLaneCentral + Continent.ProgressLaneSouth) >= 3
+        },
+        new Objective
+        {
+            Name = "Deploy the Bastion Fleet Carrier",
+            Details = "Call in the \"Bastion Fleet Carrier Deployment\" favor.",
+            Condition = gameData => gameData.BastionDeployed
+        },
+        new Objective
+        {
+            Name = "Fully capture 1 continent",
+            Details = "Any one continent must reach 100% control.",
+            Condition = gameData => gameData.World.Any(Continent => Continent.PercentOwned == 100)
+        },
+        new Objective
+        {
+            Name = "Have 1 Outfit reach level 6",
+            Details = "Train any outfit to level 6.",
+            Condition = gameData => gameData.Forces.Any(Outfit => Outfit.Level >= 6)
+        }
+    };
+        }
+        private void ObjectiveManager()
+        {
+            Console.Clear();
+
+            if (gameData.ActiveObjective == null)
+            {
+                Console.WriteLine("No side objective selected.\n");
+                Console.WriteLine("Available objectives:\n");
+                Console.WriteLine("\n[0] Back\n");
+                for (int i = 0; i < gameData.AllObjectives.Count; i++)
+                {
+                    Console.WriteLine($"[{i + 1}] {gameData.AllObjectives[i].Name} - {gameData.AllObjectives[i].Details}");
+                }
+
+                Console.Write("\nSelect an objective: ");
+                string input = Console.ReadLine();
+
+                if (input == "0")
+                    return;
+
+                if (int.TryParse(input, out int choice) && choice >= 1 && choice <= gameData.AllObjectives.Count)
+                {
+                    gameData.ActiveObjective = gameData.AllObjectives[choice - 1];
+                    Console.WriteLine($"New objective: \"{gameData.ActiveObjective.Name}\" ");
+
+                }
+                else
+                    Console.WriteLine("Invalid input! Press any key to try again...");
+            }
+            else
+            {
+                Console.WriteLine($"Current objective: \n\n >{gameData.ActiveObjective.Name}");
+                Console.WriteLine($" > >{gameData.ActiveObjective.Details}");
+
+                Console.WriteLine("\n\nChange objective? Y/N");
+                string input = Console.ReadLine().ToLower();
+
+                switch (input)
+                {
+                    case "y":
+                        gameData.ActiveObjective = null;
+                        ObjectiveManager();
+                        break;
+                    case "n":
+                        return;
+                    default:
+                        Console.WriteLine("Invalid input! Press any key to try again...");
+                        break;
+                }
+
+
+            }
+
+            Console.ReadKey();
+
+        }
+
+
 
         private List<Outfit> OutfitsForSale(string faction)
         {
@@ -993,10 +1086,7 @@ namespace Planetfall
                               // Placeholder - Assign Outfit
                               // Placeholder - Deploy reinforcements
                               //Placeholder - Update GameData Class
-                        Console.WriteLine("PLACEHOLDER: Advisor recommendation ");
-                        Console.WriteLine("PLACEHOLDER: Battle planning");
-                        Console.WriteLine("Press any key to continue...");
-                        Console.ReadKey();
+                        BattlePlanner();
                         break;
                     case "2": // Placeholder - Pull Outfit data from GameData Class
 
@@ -1021,6 +1111,224 @@ namespace Planetfall
             }
 
 
+        }
+
+
+        private void BattlePlanner()
+        {
+
+            bool planning = true;
+
+            while (planning)
+            {
+
+
+                Console.Clear();
+                CurrentPlan();
+                Console.WriteLine("================PLANNING PHASE================\n\n");
+
+
+                Console.WriteLine("Select continent:\n");
+                Console.WriteLine("[0] Back\n");
+                for (int i = 0; i < gameData.World.Count; i++)
+                    Console.WriteLine($"[{i + 1}] {gameData.World[i].Name}");
+
+                string input = Console.ReadLine();
+                if (input == "0")
+                {
+
+                    planning = false;
+                    continue;
+                }
+
+                if (!int.TryParse(input, out int contIndex) || contIndex < 1 || contIndex > gameData.World.Count)
+                {
+                    Console.WriteLine("Invalid input. Press any key...");
+                    Console.ReadKey();
+                    planning = false;
+                    continue; 
+                }
+
+                var continentChoice = gameData.World[contIndex - 1];
+
+                Console.WriteLine($"\n\n>{continentChoice.Name} selected");
+                Console.WriteLine("\nSelect a lane:\n");
+                Console.WriteLine("[0] Back\n");
+                Console.WriteLine("[1] North");
+                Console.WriteLine("[2] Central");
+                Console.WriteLine("[3] South");
+
+                input = Console.ReadLine();
+                string laneChoice;
+                
+
+                switch (input)
+                {
+                    case "0":
+                        planning = false;
+                        continue;
+                    case "1":
+                        laneChoice = "North";
+                        break;
+                    case "2":
+                        laneChoice = "Central";
+                        break;
+                    case "3":
+                        laneChoice = "South";
+                        break;
+                    default:
+                        laneChoice = null;
+                        break;
+                }
+
+                if (laneChoice == null)
+                {
+                    Console.WriteLine("Invalid input. Press any key...");
+                    Console.ReadKey();
+                    planning = false;
+                    continue;
+                }
+
+                Console.WriteLine($"\n\n> >{laneChoice} selected");
+                Console.WriteLine($"\nSelect an outfit to deploy to {continentChoice.Name} - {laneChoice}:\n");
+
+                Console.WriteLine("[0] Back\n");
+
+                for (int i = 0; i < gameData.Forces.Count; i++)
+                {
+                    var Outfit = gameData.Forces[i];
+                    
+
+                    int used = gameData.OutfitDeployment.ContainsKey(Outfit.Tag) ? gameData.OutfitDeployment[Outfit.Tag] : 0; 
+                    int max = Outfit.Spec == "Qrf" ? 2 : 1;
+
+                    
+                    if (Outfit.Upgrades.ContainsKey("Qrf3") && Outfit.Upgrades["Qrf3"].IsBought) max++;
+                    if (Outfit.Upgrades.ContainsKey("Qrf5") && Outfit.Upgrades["Qrf5"].IsBought) max++;
+
+                    Console.WriteLine($"[{i + 1}] {Outfit.Name,-20} ({Outfit.Tag})  Used: {used}/{max}");
+                }
+
+                input = Console.ReadLine();
+
+                if (input == "0")
+                {
+
+                    planning = false;
+                continue;
+                }
+
+                if (!int.TryParse(input, out int outfitIndex) || outfitIndex < 1 || outfitIndex > gameData.Forces.Count)
+                {
+                    Console.WriteLine("Invalid input. Press any key...");
+                    Console.ReadKey();
+                    planning = false;
+                    continue;
+                }
+
+
+                var selectedOutfit = gameData.Forces[outfitIndex - 1];
+
+                if (!gameData.OutfitDeployment.ContainsKey(selectedOutfit.Tag))
+                    gameData.OutfitDeployment[selectedOutfit.Tag] = 0;
+
+                int currentUses = gameData.OutfitDeployment[selectedOutfit.Tag];
+                int maxUses = selectedOutfit.Spec == "Qrf" ? 2 : 1;
+
+                if (selectedOutfit.Upgrades.ContainsKey("Qrf3") && selectedOutfit.Upgrades["Qrf3"].IsBought) maxUses++;
+                if (selectedOutfit.Upgrades.ContainsKey("Qrf5") && selectedOutfit.Upgrades["Qrf5"].IsBought) maxUses++;
+
+                if (currentUses >= maxUses)
+                {
+                    Console.WriteLine("Outfit has reached maximum deployments this turn.");
+                    Console.ReadKey();
+                    continue;
+                }
+
+                Simulation plan = null;
+
+                foreach (var battle in gameData.BattlePlans)
+                {
+                    if (battle.ContinentName == continentChoice.Name && battle.LaneName == laneChoice)
+                    {
+                        plan = battle;
+                        break; 
+                    }
+                }
+
+                if (plan == null)
+                {
+                    plan = new Simulation
+                    {
+                        ContinentName = continentChoice.Name,
+                        LaneName=laneChoice
+                    };
+
+                    gameData.BattlePlans.Add(plan);
+                }
+
+                plan.DeployedOutfits.Add(selectedOutfit);
+                gameData.OutfitDeployment[selectedOutfit.Tag]++;
+
+                Console.WriteLine($"\n> > >{selectedOutfit.Name} assigned to {continentChoice.Name} - {laneChoice}.");
+                Console.WriteLine("Press any key to continue...");
+                
+                Console.ReadKey();
+                continue;
+            }
+        }
+
+
+        private void CurrentPlan()
+        {
+            Console.WriteLine("=== Current Battle Plan ===\n");
+
+            
+            Dictionary<string, Dictionary<string, List<Outfit>>> battleMap = new Dictionary<string, Dictionary<string, List<Outfit>>>();
+
+            foreach (var sim in gameData.BattlePlans)
+            {
+                
+                if (!battleMap.ContainsKey(sim.ContinentName))
+                    battleMap[sim.ContinentName] = new Dictionary<string, List<Outfit>>();
+
+                
+                if (!battleMap[sim.ContinentName].ContainsKey(sim.LaneName))
+                    battleMap[sim.ContinentName][sim.LaneName] = new List<Outfit>();
+
+                
+                battleMap[sim.ContinentName][sim.LaneName].AddRange(sim.DeployedOutfits);
+            }
+
+            
+            foreach (var continentEntry in battleMap)
+            {
+                string continent = continentEntry.Key;
+
+                foreach (var laneEntry in continentEntry.Value)
+                {
+                    string lane = laneEntry.Key;
+                    List<Outfit> outfits = laneEntry.Value;
+
+                    Console.WriteLine($"{continent} - {lane}:");
+
+                    if (outfits.Count == 0)
+                    {
+                        Console.WriteLine("  (none)");
+                    }
+                    else
+                    {
+                        foreach (var outfit in outfits)
+                        {
+                            Console.WriteLine($"  - {outfit.Tag} ({outfit.Name})");
+                        }
+                    }
+
+                    Console.WriteLine(); 
+                }
+            }
+
+            Console.WriteLine("===========================\n");
         }
 
         private void UpgradeShop()

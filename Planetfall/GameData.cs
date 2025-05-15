@@ -11,7 +11,7 @@ namespace Planetfall
         public string PlayerName { get; set; }
         public string Faction { get; set; }
         public string Difficulty { get; set; }
-        public string ActiveObjective { get; set; }
+        public Objective ActiveObjective { get; set; } = null;
         public int CurrentTurn { get; set; }
         public int MaxTurns { get; set; }
         public int Score { get; set; }
@@ -108,8 +108,10 @@ namespace Planetfall
         public int AmountMaxCrashTrained { get; set; }
         public int AmountMaxCrashElite { get; set; }
         */
-        
-
+        public List<Objective> AllObjectives { get; set; } = new List<Objective>();
+        public List<Simulation> BattlePlans { get; set; } = new();
+        public bool BastionDeployed { get; set; } = false;
+        public Dictionary<string, int> OutfitDeployment { get; set; } = new();
         public void AddOutfit(Outfit outfit)
         {
             Forces.Add(outfit);
@@ -151,23 +153,23 @@ namespace Planetfall
             switch (upgradeTag)
             {
                 // BALANCING SUBJECT TO CHANGE
-                case "Lvl1": outfit.ComEffVsAir += 1; break; 
-                case "Lvl2": outfit.CE_All += 1; break;      
-                case "Lvl3": outfit.TEN_All += 1; break;     
+                case "Lvl1": outfit.ComEffVsAir += 1; break;
+                case "Lvl2": outfit.CE_All += 1; break;
+                case "Lvl3": outfit.TEN_All += 1; break;
 
-                
-                case "Inf1": outfit.ComEffVsInf += 2; outfit.TenVsInf += 1; break; 
-                case "Inf2": outfit.ComEffVsInf += 4; break;                       
-                case "Inf3": outfit.ComEffVsAir += 3; break;                       
-                case "Inf4": outfit.ComEffVsArm += 2; break;                       
+
+                case "Inf1": outfit.ComEffVsInf += 2; outfit.TenVsInf += 1; break;
+                case "Inf2": outfit.ComEffVsInf += 4; break;
+                case "Inf3": outfit.ComEffVsAir += 3; break;
+                case "Inf4": outfit.ComEffVsArm += 2; break;
                 case "Inf5":
-                    outfit.TEN_All += 2;                                           
+                    outfit.TEN_All += 2;
                     outfit.ComEffVsAir += 2;
                     break;
 
-                
-                case "Arm1": outfit.TEN_All += 2; break;                           
-                case "Arm2": outfit.ComEffVsInf += 2; break;                      
+
+                case "Arm1": outfit.TEN_All += 2; break;
+                case "Arm2": outfit.ComEffVsInf += 2; break;
                 case "Arm3":
                     switch (outfit.Faction)
                     {
@@ -178,31 +180,31 @@ namespace Planetfall
                             outfit.TenVsArm += 1;
                             break;
                     }
-                    break; 
-                case "Arm4": outfit.TenVsAir += 1; break;                          
+                    break;
+                case "Arm4": outfit.TenVsAir += 1; break;
                 case "Arm5":
                     outfit.ComEffVsInf += 2;
                     outfit.ComEffVsArm += 2;
-                    break; 
+                    break;
 
-                
-                case "Air1": outfit.TEN_All += 1; break;                           
-                case "Air2": outfit.ComEffVsArm += 3; break;                       
+
+                case "Air1": outfit.TEN_All += 1; break;
+                case "Air2": outfit.ComEffVsArm += 3; break;
                 case "Air3":
                     outfit.ComEffVsArm += 3;
                     outfit.ComEffVsAir += 3;
                     outfit.ComEffVsInf -= 2;
-                    break; 
-                case "Air4": outfit.ComEffVsAir += 3; break;                       
+                    break;
+                case "Air4": outfit.ComEffVsAir += 3; break;
                 case "Air5":
                     outfit.TenVsInf += 3;
                     outfit.TenVsArm += 3;
-                    break; 
+                    break;
 
-                
-                case "Qrf1": outfit.TenVsAir += 2; break;                          
-                case "Qrf2": outfit.TEN_All += 1; break;                           
-                case "Qrf3": outfit.ComEffVsInf += 2; break;                       
+
+                case "Qrf1": outfit.TenVsAir += 2; break;
+                case "Qrf2": outfit.TEN_All += 1; break;
+                case "Qrf3": outfit.ComEffVsInf += 2; break;
 
                 default:
                     Console.WriteLine($"No stat effect defined for upgrade {upgradeTag}.");

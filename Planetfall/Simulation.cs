@@ -8,5 +8,8 @@ namespace Planetfall
 {
     class Simulation
     {
+        public string ContinentName { get; set; }
+        public string LaneName { get; set; }
+        public List<Outfit> DeployedOutfits { get; set; } = new List<Outfit>();
     }
 }
