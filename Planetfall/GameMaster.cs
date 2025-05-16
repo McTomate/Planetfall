@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Sources;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.IO;
 
 namespace Planetfall
 {
@@ -13,7 +16,7 @@ namespace Planetfall
     {
 
         private bool running = true;
-
+        private GameData? gameData;
         public void Start()
         {
             while (running)
@@ -23,7 +26,6 @@ namespace Planetfall
                 NavMainMenu(input);
             }
         }
-
         private void MainMenu()
         {
             Console.Clear();
@@ -34,8 +36,6 @@ namespace Planetfall
             Console.WriteLine("[3] Help");
             Console.WriteLine("[4] Exit Game");
         }
-
-
         private void NavMainMenu(string input)
         {
             switch (input.Trim())
@@ -58,7 +58,6 @@ namespace Planetfall
                     break;
             }
         }
-
         public static List<Outfit> GetStartOutfits(string faction, string diff)
         {
             var outfits = new List<Outfit>();
@@ -165,10 +164,6 @@ namespace Planetfall
 
             return outfits;
         }
-
-        private GameData gameData;
-
-
         private void NewGame()
         {
             Console.Clear();
@@ -194,6 +189,18 @@ namespace Planetfall
             Console.WriteLine(", religious technocrats, seeking the promised enlightenment of the Vanu alien race through the usage of their long lost relics and technology - performing human augmentation on the people of Auraxis in pursuit of this goal, consent be damned.\n");
             Console.WriteLine("You have proven yourself on the battlefield through superior squad based tactics and excellent leadership. Now the general staff has appointed you as the new prodigy commander to lead a handfull of outfits and to secure absolute victory. You are ready because failure is not an option!\n");
             */
+            string faction = "";
+            string choiceFaction = "";
+            string username = "";
+            string choiceDiff = "";
+            string diff = "";
+            int nanites = 0;
+            string battleName = "";
+            int maxTurns = 0;
+
+
+
+
 
             var intro = new List<(string Text, ConsoleColor? Color)>
             {
@@ -220,329 +227,366 @@ namespace Planetfall
             Console.Write("On the Battlefield you were called \"Napo\", short for \"Napoleon\" because of your tactical brilliance but in your new environment soldiers of lower rank greet you as: ");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Commander ");
-            string username = Console.ReadLine();
+            username = Console.ReadLine();
 
             Console.ResetColor();
             Console.WriteLine("\n-------------------\n");
 
-            var flavorFactionSelect = new List<(string Text, ConsoleColor? Color)>
+            while (true)
             {
-                ("Like many others around you, you served in one of the many Mobile Infantry Battalions of the Terran Republic and went on the expedition through the mysterious wormhole leading into the unknown. After the arrival on Auraxis, amidst the rising tensions and the official secession of the New Conglomerate and Vanu Sovereignty you decided to...",null)
-            };
-            TextFormatting.FormattedText(flavorFactionSelect, linelength);
-            //Console.WriteLine("Like many others around you, you served in one of the many Mobile Infantry Battalions of the Terran Republic and went on the expedition through the mysterious wormhole leading into the unknown. After the arrival on Auraxis, amidst the rising tensions and the official secession of the New Conglomerate and Vanu Sovereignty you decided to...");
-            //Console.WriteLine("Choose your faction:\n");
-            Console.Write("\n[1] ...renew your pledge of loyalty to the ");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("Terran Republic (TR)");
-            Console.ResetColor();
-            Console.WriteLine(" - \"Loyalty Until Death, Strength In Unity\"");
-            Console.Write("[2] ...fight for your rights and Freedom with the ");
-            Console.ForegroundColor = ConsoleColor.DarkBlue;
-            Console.Write("New Conglomerate (NC)");
-            Console.ResetColor();
-            Console.WriteLine(" - \"Liberty or Death!\"");
-            Console.Write("[3] ...embraced the truth of enlightenment from your new overlords in the ");
-            Console.ForegroundColor = ConsoleColor.DarkMagenta;
-            Console.Write("Vanu Sovereignty (VS)");
-            Console.ResetColor();
-            Console.WriteLine(" - \"Technology Equals Might\"");
-            string choiceFaction = Console.ReadLine();
-            string faction;
-            //Console.Clear();
-            Console.WriteLine("\n-------------------\n");
+
+                TextFormatting.FormattedText("Like many others around you, you served in one of the many Mobile Infantry Battalions of the Terran Republic and went on the expedition through the mysterious wormhole leading into the unknown. After the arrival on Auraxis, amidst the rising tensions and the official secession of the New Conglomerate and Vanu Sovereignty you decided to...", linelength);
+
+                Console.Write("\n[1] ...renew your pledge of loyalty to the ");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("Terran Republic (TR)");
+                Console.ResetColor();
+                Console.WriteLine(" - \"Loyalty Until Death, Strength In Unity\"");
+                Console.Write("[2] ...fight for your rights and Freedom with the ");
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                Console.Write("New Conglomerate (NC)");
+                Console.ResetColor();
+                Console.WriteLine(" - \"Liberty or Death!\"");
+                Console.Write("[3] ...embraced the truth of enlightenment from your new overlords in the ");
+                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                Console.Write("Vanu Sovereignty (VS)");
+                Console.ResetColor();
+                Console.WriteLine(" - \"Technology Equals Might\"");
+                choiceFaction = Console.ReadLine();
+
+                //Console.Clear();
+                Console.WriteLine("\n-------------------\n");
 
 
 
-            switch (choiceFaction.Trim())
-            {
-                case "1":
-                    faction = "TR";
-                    //Console.WriteLine("You were no fool to any delusions of freedom or enlightenment. You knew that what we need in times like these is unity. The NC and VS endanger this expedition and by extension all of humanity. Battle after battle, victory after victory, you rose in the ranks of the republican forces. Many medals and commendations later, you have finally been promoted to Commander. Your comrades in the field will miss you but they know that with you in the command center, you have a shot at total victory. They believe that you can finally end this war and allow us to find a way to reunite with our distant brothers and sisters back on Earth.");
-                    //Console.WriteLine("You wake up from your daydream to a message on your console. It's the official message from the upper ranks.");
-                    //Console.ForegroundColor = ConsoleColor.Red;
-                    //Console.WriteLine("\nYou have been granted command over the superior forces of our republic! The brass has high expectations for you.");
-                    //Console.ResetColor();
-                    //Console.WriteLine("\nYou remember all the battles you went through. From the beaches of Oshur to the treacherous jungle of Hossin. You have been stuck in sieges for days or have seen them from afar from a bastion fleet carrier. You remember the sweet taste of your first victory and the bitter aftertaste of the first crushing defeat. Thinking back, you think the war you have fought so far was and will stay...");
+                switch (choiceFaction.Trim())
+                {
+                    case "1":
+                        faction = "TR";
+                        //Console.WriteLine("You were no fool to any delusions of freedom or enlightenment. You knew that what we need in times like these is unity. The NC and VS endanger this expedition and by extension all of humanity. Battle after battle, victory after victory, you rose in the ranks of the republican forces. Many medals and commendations later, you have finally been promoted to Commander. Your comrades in the field will miss you but they know that with you in the command center, you have a shot at total victory. They believe that you can finally end this war and allow us to find a way to reunite with our distant brothers and sisters back on Earth.");
+                        //Console.WriteLine("You wake up from your daydream to a message on your console. It's the official message from the upper ranks.");
+                        //Console.ForegroundColor = ConsoleColor.Red;
+                        //Console.WriteLine("\nYou have been granted command over the superior forces of our republic! The brass has high expectations for you.");
+                        //Console.ResetColor();
+                        //Console.WriteLine("\nYou remember all the battles you went through. From the beaches of Oshur to the treacherous jungle of Hossin. You have been stuck in sieges for days or have seen them from afar from a bastion fleet carrier. You remember the sweet taste of your first victory and the bitter aftertaste of the first crushing defeat. Thinking back, you think the war you have fought so far was and will stay...");
 
-                    TextFormatting.FormattedText("You were no fool to any delusions of freedom or enlightenment. You knew that what we need in times like these is unity. The NC and VS endanger this expedition and by extension all of humanity. Battle after battle, victory after victory, you rose in the ranks of the republican forces. Many medals and commendations later, you have finally been promoted to Commander. Your comrades in the field will miss you but they know that with you in the command center, you have a shot at total victory. They believe that you can finally end this war and allow us to find a way to reunite with our distant brothers and sisters back on Earth.", linelength);
-                    TextFormatting.FormattedText("You wake up from your daydream to a message on your PDA. It's the official message from the upper ranks.", linelength);
-                    TextFormatting.FormattedText("\nYou have been granted command over the superior forces of our republic! The brass has high expectations for you.\n", linelength, ConsoleColor.Red);
-                    TextFormatting.FormattedText("You remember all the battles you went through. From the beaches of Oshur to the treacherous jungle of Hossin. You have been stuck in sieges for days or have seen them from afar from a bastion fleet carrier. You remember the sweet taste of your first victory and the bitter aftertaste of the first crushing defeat. Thinking back, you think the war you have fought so far was and will stay...", linelength);
-                    break;
-                case "2":
-                    faction = "NC";
-                    Console.WriteLine("PLACEHOLDER: FactionNC");
-                    Console.ForegroundColor = ConsoleColor.DarkBlue;
-                    Console.WriteLine("You have been granted access to the best mercenaries money can buy! Perform well and the suits will give you a pay raise.");
-                    Console.ResetColor();
-                    break;
-                case "3":
-                    faction = "VS";
-                    Console.WriteLine("PLACEHOLDER: FactionVS");
-                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                    Console.WriteLine("The Vanu have chosen you to lead us to enlightenment! We have sacrificed to much to fail now.");
-                    Console.ResetColor();
-                    break;
-                default:
-                    Console.WriteLine("Invalid input. Press any key to try again...");
-                    Console.ReadKey();
-                    return;
+                        TextFormatting.FormattedText("You were no fool to any delusions of freedom or enlightenment. You knew that what we need in times like these is unity. The NC and VS endanger this expedition and by extension all of humanity. Battle after battle, victory after victory, you rose in the ranks of the republican forces. Many medals and commendations later, you have finally been promoted to Commander. Your comrades in the field will miss you but they know that with you in the command center, you have a shot at total victory. They believe that you can finally end this war and allow us to find a way to reunite with our distant brothers and sisters back on Earth.", linelength);
+                        TextFormatting.FormattedText("You wake up from your daydream to a message on your PDA. It's the official message from the upper ranks.", linelength);
+                        TextFormatting.FormattedText("\nYou have been granted command over the superior forces of our republic! The brass has high expectations for you.\n", linelength, ConsoleColor.Red);
+                        TextFormatting.FormattedText("You remember all the battles you went through. From the beaches of Oshur to the treacherous jungle of Hossin. You have been stuck in sieges for days or have seen them from afar from a bastion fleet carrier. You remember the sweet taste of your first victory and the bitter aftertaste of the first crushing defeat. Thinking back, you think the war you have fought so far was and will stay...", linelength);
+                        break;
+                    case "2":
+                        faction = "NC";
+                        Console.WriteLine("PLACEHOLDER: FactionNC");
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("You have been granted access to the best mercenaries money can buy! Perform well and the suits will give you a pay raise.");
+                        Console.ResetColor();
+                        break;
+                    case "3":
+                        faction = "VS";
+                        Console.WriteLine("PLACEHOLDER: FactionVS");
+                        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                        Console.WriteLine("The Vanu have chosen you to lead us to enlightenment! We have sacrificed to much to fail now.");
+                        Console.ResetColor();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input. Press any key to try again...");
+                        Console.ReadKey();
+                        continue;
+                }
+                break;
             }
 
-            // Placeholder - Update faction in Gamedata Class
-
-
-            //Console.WriteLine("\nSelect difficulty:\n");
-            Console.WriteLine("\n[1] ...Easy");
-            Console.WriteLine("[2] ...Normal");
-            Console.WriteLine("[3] ...Hard");
-            string choiceDiff = Console.ReadLine();
-            //Console.Clear();
-            string diff = "";
-            int nanites = 0;
-            Console.WriteLine("\n-------------------\n");
-            switch (choiceFaction)
+            bool check = true;
+            while (check)
             {
-                case "1":
-                    switch (choiceDiff.Trim())
-                    {
-                        case "1":
-                            diff = "Easy";
-                            nanites = 750;
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("Difficulty set to [Easy]\n\n");
-                            Console.ResetColor();
-                            TextFormatting.FormattedText("The war so far has been a walk in the park. So much so that you have often wondered how this conflict has dragged on for over 10 years. What were the Commanders actually doing? It doesn't matter now, for you will turn the tide and bring peace to Auraxis.", linelength);
-                            TextFormatting.FormattedText("The brass has offered you a leadership position for many different fronts. You have decided to lead the next...", linelength);
-                            break;
-                        case "2":
-                            diff = "Normal";
-                            nanites = 500;
-                            Console.WriteLine("Difficulty set to [Normal]");
-                            Console.WriteLine("PLACEHOLDER: FactionTR - DiffNorm");
-                            break;
-                        case "3":
-                            diff = "Hard";
-                            nanites = 250;
-                            Console.WriteLine("Difficulty set to [Hard]");
-                            Console.WriteLine("PLACEHOLDER: FactionTR - DiffHard");
-                            break;
-                        default:
-                            Console.WriteLine("Invalid input! Returning to main menu...");
-                            Console.ReadKey();
-                            return;
-                    }
-                    break;
-                case "2":
-                    switch (choiceDiff.Trim())
-                    {
-                        case "1":
-                            diff = "Easy";
-                            nanites = 750;
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("Difficulty set to [Easy]\n\n");
-                            Console.ResetColor();
-                            TextFormatting.FormattedText("The war so far has been a walk in the park. So much so that you have often wondered how this conflict has dragged on for over 10 years. What were the Commanders actually doing? It doesn't matter now, for you will turn the tide and bring peace to Auraxis.", linelength);
-                            TextFormatting.FormattedText("The brass has offered you a leadership position for many different fronts. You have decided to lead the next...", linelength);
-                            Console.WriteLine("PLACEHOLDER: FactionNC - DiffEasy");
-                            break;
-                        case "2":
-                            diff = "Normal";
-                            nanites = 500;
-                            Console.WriteLine("Difficulty set to [Normal]");
-                            Console.WriteLine("PLACEHOLDER: FactionNC - DiffNorm");
-                            break;
-                        case "3":
-                            diff = "Hard";
-                            nanites = 250;
-                            Console.WriteLine("Difficulty set to [Hard]");
-                            Console.WriteLine("PLACEHOLDER: FactionNC - DiffHard");
-                            break;
-                        default:
-                            Console.WriteLine("Invalid input! Returning to main menu...");
-                            Console.ReadKey();
-                            return;
-                    }
-                    break;
-                case "3":
-                    switch (choiceDiff.Trim())
-                    {
-                        case "1":
-                            diff = "Easy";
-                            nanites = 750;
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("Difficulty set to [Easy]\n\n");
-                            Console.ResetColor();
-                            TextFormatting.FormattedText("The war so far has been a walk in the park. So much so that you have often wondered how this conflict has dragged on for over 10 years. What were the Commanders actually doing? It doesn't matter now, for you will turn the tide and bring peace to Auraxis.", linelength);
-                            TextFormatting.FormattedText("The brass has offered you a leadership position for many different fronts. You have decided to lead the next...", linelength);
-                            Console.WriteLine("PLACEHOLDER: FactionVS - DiffEasy");
-                            break;
-                        case "2":
-                            diff = "Normal";
-                            nanites = 500;
-                            Console.WriteLine("Difficulty set to [Normal]");
-                            Console.WriteLine("PLACEHOLDER: FactionVS - DiffNorm");
-                            break;
-                        case "3":
-                            diff = "Hard";
-                            nanites = 250;
-                            Console.WriteLine("Difficulty set to [Hard]");
-                            Console.WriteLine("PLACEHOLDER: FactionVS - DiffHard");
-                            break;
-                        default:
-                            Console.WriteLine("Invalid input! Returning to main menu...");
-                            Console.ReadKey();
-                            return;
-                    }
-                    break;
+
+
+                //Console.WriteLine("\nSelect difficulty:\n");
+                Console.WriteLine("\n[1] ...Easy");
+                Console.WriteLine("[2] ...Normal");
+                Console.WriteLine("[3] ...Hard");
+                choiceDiff = Console.ReadLine();
+                //Console.Clear();
+
+
+                Console.WriteLine("\n-------------------\n");
+                switch (choiceFaction)
+                {
+                    case "1":
+                        switch (choiceDiff.Trim())
+                        {
+                            case "1":
+                                diff = "Easy";
+                                nanites = 750;
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.WriteLine("Difficulty set to [Easy]\n\n");
+                                Console.ResetColor();
+                                TextFormatting.FormattedText("The war so far has been a walk in the park. So much so that you have often wondered how this conflict has dragged on for over 10 years. What were the Commanders actually doing? It doesn't matter now, for you will turn the tide and bring peace to Auraxis.", linelength);
+                                TextFormatting.FormattedText("The brass has offered you a leadership position for many different fronts. You have decided to lead the next...", linelength);
+                                check = false;
+                                break;
+                            case "2":
+                                diff = "Normal";
+                                nanites = 500;
+                                Console.WriteLine("Difficulty set to [Normal]");
+                                Console.WriteLine("PLACEHOLDER: FactionTR - DiffNorm");
+                                check = false;
+                                break;
+                            case "3":
+                                diff = "Hard";
+                                nanites = 250;
+                                Console.WriteLine("Difficulty set to [Hard]");
+                                Console.WriteLine("PLACEHOLDER: FactionTR - DiffHard");
+                                check = false;
+                                break;
+                            default:
+                                Console.WriteLine("Invalid input! Returning to main menu...");
+                                Console.ReadKey();
+                                check = true;
+                                continue;
+                        }
+                        break;
+                    case "2":
+                        switch (choiceDiff.Trim())
+                        {
+                            case "1":
+                                diff = "Easy";
+                                nanites = 750;
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.WriteLine("Difficulty set to [Easy]\n\n");
+                                Console.ResetColor();
+                                TextFormatting.FormattedText("The war so far has been a walk in the park. So much so that you have often wondered how this conflict has dragged on for over 10 years. What were the Commanders actually doing? It doesn't matter now, for you will turn the tide and bring peace to Auraxis.", linelength);
+                                TextFormatting.FormattedText("The brass has offered you a leadership position for many different fronts. You have decided to lead the next...", linelength);
+                                Console.WriteLine("PLACEHOLDER: FactionNC - DiffEasy");
+                                check = false;
+                                break;
+                            case "2":
+                                diff = "Normal";
+                                nanites = 500;
+                                Console.WriteLine("Difficulty set to [Normal]");
+                                Console.WriteLine("PLACEHOLDER: FactionNC - DiffNorm");
+                                check = false;
+                                break;
+                            case "3":
+                                diff = "Hard";
+                                nanites = 250;
+                                Console.WriteLine("Difficulty set to [Hard]");
+                                Console.WriteLine("PLACEHOLDER: FactionNC - DiffHard");
+                                check = false;
+                                break;
+                            default:
+                                Console.WriteLine("Invalid input! Returning to main menu...");
+                                Console.ReadKey();
+                                check = true;
+                                continue; ;
+                        }
+                        break;
+                    case "3":
+                        switch (choiceDiff.Trim())
+                        {
+                            case "1":
+                                diff = "Easy";
+                                nanites = 750;
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.WriteLine("Difficulty set to [Easy]\n\n");
+                                Console.ResetColor();
+                                TextFormatting.FormattedText("The war so far has been a walk in the park. So much so that you have often wondered how this conflict has dragged on for over 10 years. What were the Commanders actually doing? It doesn't matter now, for you will turn the tide and bring peace to Auraxis.", linelength);
+                                TextFormatting.FormattedText("The brass has offered you a leadership position for many different fronts. You have decided to lead the next...", linelength);
+                                Console.WriteLine("PLACEHOLDER: FactionVS - DiffEasy");
+                                check = false;
+                                break;
+                            case "2":
+                                diff = "Normal";
+                                nanites = 500;
+                                Console.WriteLine("Difficulty set to [Normal]");
+                                Console.WriteLine("PLACEHOLDER: FactionVS - DiffNorm");
+                                check = false;
+                                break;
+                            case "3":
+                                diff = "Hard";
+                                nanites = 250;
+                                Console.WriteLine("Difficulty set to [Hard]");
+                                Console.WriteLine("PLACEHOLDER: FactionVS - DiffHard");
+                                check = false;
+                                break;
+                            default:
+                                Console.WriteLine("Invalid input! Returning to main menu...");
+                                Console.ReadKey();
+                                check = true;
+                                continue; ;
+                        }
+                        break;
 
 
 
+                }
+                break;
             }
 
+            check = true;
 
-
-            //Console.WriteLine("\nSelect game length:\n");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("[0] DEMO: 2 turns\n");
-            Console.ResetColor();
-            Console.WriteLine("[1] ...Skirmish (10 turns)");
-            Console.WriteLine("[2] ...Raid (20 turns)");
-            Console.WriteLine("[3] ...Operation (35 turns)");
-            Console.WriteLine("[4] ...Campaign (100 turns)");
-            string gameLength = Console.ReadLine();
-            string battleName = "";
-            int maxTurns = 0;
-            //Console.Clear();
-            Console.WriteLine("\n-------------------\n");
-            switch (choiceFaction)
+            while (check)
             {
-                case "1":
-                    switch (gameLength)
-                    {
-                        case "0":
-                            Console.WriteLine("PLACEHOLDER: FactionTR - LengthDemo");
-                            Console.WriteLine("Game length set to 2 turns.");
-                            battleName = "DEMO";
-                            maxTurns = 2;
-                            break;
-                        case "1":
-                            Console.WriteLine("PLACEHOLDER: FactionTR - LengthSkirmish");
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("Game length set to 10 turns.\n\n");
-                            Console.ResetColor();
-                            TextFormatting.FormattedText("A skirmish contesting multiple fronts on the continents of Indar, Esamir and Amerish will start soon and you have been appointed as commanding officer of all combat actions on those three continents. The Outfits that have been assigned to you have already reported in and are awaiting your first order.", linelength);
-                            battleName = "Skirmish";
-                            maxTurns = 10;
-                            break;
-                        case "2":
-                            Console.WriteLine("PLACEHOLDER: FactionTR - LengthRaid");
-                            Console.WriteLine("Game length set to 20 turns.");
-                            battleName = "Raid";
-                            maxTurns = 20;
-                            break;
-                        case "3":
-                            Console.WriteLine("PLACEHOLDER: FactionTR - LengthOperation");
-                            Console.WriteLine("Game length set to 35 turns.");
-                            battleName = "Operation";
-                            maxTurns = 35;
-                            break;
-                        case "4":
-                            Console.WriteLine("PLACEHOLDER: FactionTR - LengthCampaign");
-                            Console.WriteLine("Game length set to 100 turns.");
-                            battleName = "Campaign";
-                            maxTurns = 100;
-                            break;
-                        default:
-                            Console.WriteLine("Invalid input! Returning to main menu...");
-                            Console.ReadKey();
-                            return;
-                    }
-                    break;
-                case "2":
-                    switch (gameLength)
-                    {
-                        case "0":
-                            Console.WriteLine("PLACEHOLDER: FactionNC - LengthDemo");
-                            Console.WriteLine("Game length set to 3 turns.");
-                            battleName = "DEMO";
-                            maxTurns = 3;
-                            break;
-                        case "1":
-                            Console.WriteLine("PLACEHOLDER: FactionNC - LengthSkirmish");
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("Game length set to 10 turns.\n\n");
-                            Console.ResetColor();
-                            TextFormatting.FormattedText("A skirmish contesting multiple fronts on the continents of Indar, Esamir and Amerish will start soon and you have been appointed as commanding officer of all combat actions on those three continents. The Outfits that have been assigned to you have already reported in and are awaiting your first order.", linelength);
-                            battleName = "Skirmish";
-                            maxTurns = 10;
-                            break;
-                        case "2":
-                            Console.WriteLine("PLACEHOLDER: FactionNC - LengthRaid");
-                            Console.WriteLine("Game length set to 20 turns.");
-                            battleName = "Raid";
-                            maxTurns = 20;
-                            break;
-                        case "3":
-                            Console.WriteLine("PLACEHOLDER: FactionNC - LengthOperation");
-                            Console.WriteLine("Game length set to 35 turns.");
-                            battleName = "Operation";
-                            maxTurns = 35;
-                            break;
-                        case "4":
-                            Console.WriteLine("PLACEHOLDER: FactionNC - LengthCampaign");
-                            Console.WriteLine("Game length set to 100 turns.");
-                            battleName = "Campaign";
-                            maxTurns = 100;
-                            break;
-                        default:
-                            Console.WriteLine("Invalid input! Returning to main menu...");
-                            Console.ReadKey();
-                            return;
-                    }
-                    break;
-                case "3":
-                    switch (gameLength)
-                    {
-                        case "0":
-                            Console.WriteLine("Game length set to 3 turns.");
-                            battleName = "DEMO";
-                            maxTurns = 3;
-                            break;
-                        case "1":
-                            Console.WriteLine("PLACEHOLDER: FactionVS - LengthSkirmish");
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("Game length set to 10 turns.\n\n");
-                            Console.ResetColor();
-                            TextFormatting.FormattedText("A skirmish contesting multiple fronts on the continents of Indar, Esamir and Amerish will start soon and you have been appointed as commanding officer of all combat actions on those three continents. The Outfits that have been assigned to you have already reported in and are awaiting your first order.", linelength);
-                            battleName = "Skirmish";
-                            maxTurns = 10;
-                            break;
-                        case "2":
-                            Console.WriteLine("PLACEHOLDER: FactionVS - LengthRaid");
-                            Console.WriteLine("Game length set to 20 turns.");
-                            battleName = "Raid";
-                            maxTurns = 20;
-                            break;
-                        case "3":
-                            Console.WriteLine("PLACEHOLDER: FactionVS - LengthOperation");
-                            Console.WriteLine("Game length set to 35 turns.");
-                            battleName = "Operation";
-                            maxTurns = 35;
-                            break;
-                        case "4":
-                            Console.WriteLine("PLACEHOLDER: FactionVS - LengthCampaign");
-                            Console.WriteLine("Game length set to 100 turns.");
-                            battleName = "Campaign";
-                            maxTurns = 100;
-                            break;
-                        default:
-                            Console.WriteLine("Invalid input! Returning to main menu...");
-                            Console.ReadKey();
-                            return;
-                    }
-                    break;
+
+                //Console.WriteLine("\nSelect game length:\n");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("[0] DEMO: 2 turns\n");
+                Console.ResetColor();
+                Console.WriteLine("[1] ...Skirmish (10 turns)");
+                Console.WriteLine("[2] ...Raid (20 turns)");
+                Console.WriteLine("[3] ...Operation (35 turns)");
+                Console.WriteLine("[4] ...Campaign (100 turns)");
+                string gameLength = Console.ReadLine();
+
+                //Console.Clear();
+                Console.WriteLine("\n-------------------\n");
+                switch (choiceFaction)
+                {
+                    case "1":
+                        switch (gameLength)
+                        {
+                            case "0":
+                                Console.WriteLine("PLACEHOLDER: FactionTR - LengthDemo");
+                                Console.WriteLine("Game length set to 2 turns.");
+                                battleName = "DEMO";
+                                maxTurns = 2;
+                                check = false;
+                                break;
+                            case "1":
+                                Console.WriteLine("PLACEHOLDER: FactionTR - LengthSkirmish");
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.WriteLine("Game length set to 10 turns.\n\n");
+                                Console.ResetColor();
+                                TextFormatting.FormattedText("A skirmish contesting multiple fronts on the continents of Indar, Esamir and Amerish will start soon and you have been appointed as commanding officer of all combat actions on those three continents. The Outfits that have been assigned to you have already reported in and are awaiting your first order.", linelength);
+                                battleName = "Skirmish";
+                                maxTurns = 10;
+                                check = false;
+                                break;
+                            case "2":
+                                Console.WriteLine("PLACEHOLDER: FactionTR - LengthRaid");
+                                Console.WriteLine("Game length set to 20 turns.");
+                                battleName = "Raid";
+                                maxTurns = 20;
+                                check = false;
+                                break;
+                            case "3":
+                                Console.WriteLine("PLACEHOLDER: FactionTR - LengthOperation");
+                                Console.WriteLine("Game length set to 35 turns.");
+                                battleName = "Operation";
+                                maxTurns = 35;
+                                check = false;
+                                break;
+                            case "4":
+                                Console.WriteLine("PLACEHOLDER: FactionTR - LengthCampaign");
+                                Console.WriteLine("Game length set to 100 turns.");
+                                battleName = "Campaign";
+                                maxTurns = 100;
+                                check = false;
+                                break;
+                            default:
+                                Console.WriteLine("Invalid input! Returning to main menu...");
+                                Console.ReadKey();
+                                check = true;
+                                continue;
+                        }
+                        break;
+                    case "2":
+                        switch (gameLength)
+                        {
+                            case "0":
+                                Console.WriteLine("PLACEHOLDER: FactionNC - LengthDemo");
+                                Console.WriteLine("Game length set to 3 turns.");
+                                battleName = "DEMO";
+                                maxTurns = 3;
+                                check = false;
+                                break;
+                            case "1":
+                                Console.WriteLine("PLACEHOLDER: FactionNC - LengthSkirmish");
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.WriteLine("Game length set to 10 turns.\n\n");
+                                Console.ResetColor();
+                                TextFormatting.FormattedText("A skirmish contesting multiple fronts on the continents of Indar, Esamir and Amerish will start soon and you have been appointed as commanding officer of all combat actions on those three continents. The Outfits that have been assigned to you have already reported in and are awaiting your first order.", linelength);
+                                battleName = "Skirmish";
+                                maxTurns = 10;
+                                check = false;
+                                break;
+                            case "2":
+                                Console.WriteLine("PLACEHOLDER: FactionNC - LengthRaid");
+                                Console.WriteLine("Game length set to 20 turns.");
+                                battleName = "Raid";
+                                maxTurns = 20;
+                                check = false;
+                                break;
+                            case "3":
+                                Console.WriteLine("PLACEHOLDER: FactionNC - LengthOperation");
+                                Console.WriteLine("Game length set to 35 turns.");
+                                battleName = "Operation";
+                                maxTurns = 35;
+                                check = false;
+                                break;
+                            case "4":
+                                Console.WriteLine("PLACEHOLDER: FactionNC - LengthCampaign");
+                                Console.WriteLine("Game length set to 100 turns.");
+                                battleName = "Campaign";
+                                maxTurns = 100;
+                                check = false;
+                                break;
+                            default:
+                                Console.WriteLine("Invalid input! Returning to main menu...");
+                                Console.ReadKey();
+                                check = true;
+                                continue;
+                        }
+                        break;
+                    case "3":
+                        switch (gameLength)
+                        {
+                            case "0":
+                                Console.WriteLine("Game length set to 3 turns.");
+                                battleName = "DEMO";
+                                maxTurns = 3;
+                                check = false;
+                                break;
+                            case "1":
+                                Console.WriteLine("PLACEHOLDER: FactionVS - LengthSkirmish");
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.WriteLine("Game length set to 10 turns.\n\n");
+                                Console.ResetColor();
+                                TextFormatting.FormattedText("A skirmish contesting multiple fronts on the continents of Indar, Esamir and Amerish will start soon and you have been appointed as commanding officer of all combat actions on those three continents. The Outfits that have been assigned to you have already reported in and are awaiting your first order.", linelength);
+                                battleName = "Skirmish";
+                                maxTurns = 10;
+                                check = false;
+                                break;
+                            case "2":
+                                Console.WriteLine("PLACEHOLDER: FactionVS - LengthRaid");
+                                Console.WriteLine("Game length set to 20 turns.");
+                                battleName = "Raid";
+                                maxTurns = 20;
+                                check = false;
+                                break;
+                            case "3":
+                                Console.WriteLine("PLACEHOLDER: FactionVS - LengthOperation");
+                                Console.WriteLine("Game length set to 35 turns.");
+                                battleName = "Operation";
+                                maxTurns = 35;
+                                check = false;
+                                break;
+                            case "4":
+                                Console.WriteLine("PLACEHOLDER: FactionVS - LengthCampaign");
+                                Console.WriteLine("Game length set to 100 turns.");
+                                battleName = "Campaign";
+                                maxTurns = 100;
+                                check = false;
+                                break;
+                            default:
+                                Console.WriteLine("Invalid input! Returning to main menu...");
+                                Console.ReadKey();
+                                check = true;
+                                continue;
+                        }
+                        break;
+                }
             }
             Console.WriteLine("\nThe PDA displays a new message: ");
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -578,7 +622,7 @@ namespace Planetfall
                 PlayerName = username,
                 Faction = faction,
                 Difficulty = diff,
-
+                CurrentTurn = 1,
                 MaxTurns = maxTurns,
                 Score = score,
                 Nanites = nanites,
@@ -597,13 +641,27 @@ namespace Planetfall
 
                 },
             };
+            gameData.ShopOutfits = OutfitsForSale(gameData.Faction);
+
+            var allOutfits = GetStartOutfits(gameData.Faction, gameData.Difficulty);
+            gameData.Forces = allOutfits.Take(7).ToList();
+
+            gameData.EnemyPool = new List<Outfit>();
+
+            foreach (var outfit in allOutfits)
+            {
+                if (outfit.Faction != gameData.Faction)
+                {
+                    gameData.EnemyPool.Add(outfit);
+                }
+            }
+
             gameData.Forces = GetStartOutfits(faction, diff);
             gameData.AllObjectives = CreateObjectives();
             Console.Clear();
             SituationRoom();
 
         }
-
         private void SaveScumming()
         {
 
@@ -641,35 +699,137 @@ namespace Planetfall
             }
 
         }
-
-
-
-
         private void LoadGame()
         {
             Console.Clear();
+
+            Console.WriteLine("Choose a save slot to load:\n");
+
+            for (int i = 1; i <= 3; i++)
+            {
+                string preview = GetSavePreview($"save{i}.json");
+                Console.WriteLine($"[{i}] {preview}");
+            }
+
+
+            string? input = Console.ReadLine();
+
+            string? filename = input switch
+            {
+                "1" => "save1.json",
+                "2" => "save2.json",
+                "3" => "save3.json",
+                _ => null
+            };
+
+            if (filename == null)
+            {
+                Console.WriteLine("Invalid selection.");
+                Console.ReadKey();
+                return;
+            }
+
+            string fullPath = Path.Combine("Saves", filename);
+            if (!File.Exists(fullPath))
+            {
+                Console.WriteLine("Save file not found.");
+                Console.ReadKey();
+                return;
+            }
+
+            gameData = JsonSerializer.Deserialize<GameData>(File.ReadAllText(fullPath));
+            RebuildObjectiveConditions();
+
             Console.WriteLine("Loading game...Welcome back Commander.");
-            // Placeholder - JSON loading of GameData
-            Console.WriteLine("PLACEHOLDER: JSON loading");
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
+            SituationRoom();
         }
+        private void RebuildObjectiveConditions()
+        {
+            foreach (var obj in gameData.AllObjectives)
+            {
+                switch (obj.Name)
+                {
+                    case "Capture the Crown":
+                        obj.Condition = g =>
+                            g.World.FirstOrDefault(c => c.Name == "Indar")?.ProgressLaneCentral == 100;
+                        break;
 
+                    case "Destroy 1 enemy Outfit":
+                        obj.Condition = g => g.Score >= 10;
+                        break;
+
+                    case "Capture 3 Bases":
+                        obj.Condition = g =>
+                            g.World.Sum(c => c.ProgressLaneNorth + c.ProgressLaneCentral + c.ProgressLaneSouth) >= 3;
+                        break;
+
+                    case "Deploy the Bastion Fleet Carrier":
+                        obj.Condition = g => g.BastionDeployed;
+                        break;
+
+                    case "Fully capture 1 continent":
+                        obj.Condition = g => g.World.Any(c => c.PercentOwned == 100);
+                        break;
+
+                    case "Have 1 Outfit reach level 6":
+                        obj.Condition = g => g.Forces.Any(o => o.Level >= 6);
+                        break;
+                }
+            }
+        }
         private void SaveGame()
         {
             Console.Clear();
             Console.WriteLine("Choose save file");
-            // Placeholder - JSON saving of GameData
-            Console.WriteLine("===========PLACEHOLDER===========");
-            Console.WriteLine("[1] - Shepard - Terran Republic - Easy - Turn 10");
-            Console.WriteLine("[2] - Garrus - New Conglomerate - Normal - Turn 4");
-            Console.WriteLine("[3] - Tali - Vanu Soverignty - Hard - Turn 22");
-            // Placeholder - confirm if overwrite
+
+            for (int i = 1; i <= 3; i++)
+            {
+                string preview = GetSavePreview($"save{i}.json");
+                Console.WriteLine($"[{i}] {preview}");
+            }
+
+            string? input = Console.ReadLine();
+
+            string? filename = input switch
+            {
+                "1" => "save1.json",
+                "2" => "save2.json",
+                "3" => "save3.json",
+                _ => null
+            };
+
+            if (filename == null)
+            {
+                Console.WriteLine("Invalid selection.");
+                Console.ReadKey();
+                return;
+            }
+
+            Directory.CreateDirectory("Saves");
+            string fullPath = Path.Combine("Saves", filename);
+            string json = JsonSerializer.Serialize(gameData, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(fullPath, json);
+
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
         }
+        private string GetSavePreview(string filename)
+        {
+            string fullPath = Path.Combine("Saves", filename);
+            if (!File.Exists(fullPath)) return "[Empty]";
 
-
+            try
+            {
+                var save = JsonSerializer.Deserialize<GameData>(File.ReadAllText(fullPath));
+                return $"{save.PlayerName} - {save.Faction} - {save.Difficulty} - Turn {save.CurrentTurn}";
+            }
+            catch
+            {
+                return "[Corrupted Save]";
+            }
+        }
         private void SituationRoom()
         {
 
@@ -677,7 +837,7 @@ namespace Planetfall
 
             Console.Clear();
             Console.WriteLine("SITUATION ROOM");
-            Console.WriteLine($"Turn 1 / X - [PLACEHOLDER: CurrentTurns / MaxTurns]"); // Placeholder - JSON implementation
+            Console.WriteLine($"Turn {gameData.CurrentTurn} / {gameData.MaxTurns}");
             Console.WriteLine("\n==========================================\n");
             Console.WriteLine("Overview:\n");
 
@@ -740,8 +900,7 @@ namespace Planetfall
                     break;
             }
 
-        }
-
+        }        
         private void DisplayLane(string location, int progress)
         {
             Console.Write($"{location,-10}: ");
@@ -754,7 +913,6 @@ namespace Planetfall
             }
             Console.WriteLine();
         }
-
         private void DiplomacyMod()
         {
             bool running = true;
@@ -827,7 +985,7 @@ namespace Planetfall
         {
             Name = "Destroy 1 enemy Outfit",
             Details = "Eliminate at least one enemy outfit in battle.",
-            Condition = gameData => gameData.Score >= 10 // Platzhalter
+            Condition = gameData => gameData.DestroyedEnemy=true
         },
         new Objective
         {
@@ -912,9 +1070,6 @@ namespace Planetfall
             Console.ReadKey();
 
         }
-
-
-
         private List<Outfit> OutfitsForSale(string faction)
         {
             var outfits = new List<Outfit>();
@@ -936,7 +1091,6 @@ namespace Planetfall
             }
             return outfits;
         }
-
         private void OutfitShop()
         {
 
@@ -999,7 +1153,6 @@ namespace Planetfall
 
             }
         }
-
         private void FavorShop()
         {
             bool shopping = true;
@@ -1010,7 +1163,7 @@ namespace Planetfall
                 new Favor { Name = "Artillery Barrage", Effect = "Armored convoy HE shelling", Cost = 50 },
                 new Favor { Name = "MAX Crash", Effect = "Mechsuit infantry assault", Cost = 100 },
                 new Favor { Name = "Fighter Wing Deployment", Effect = "Air-To-Air and Air-To-Ground support", Cost = 150 },
-                new Favor { Name = "Railcannon Orbital Strike", Effect = "2t Orbital Strike striking at Mach60", Cost = 200 },
+                new Favor { Name = "Railcannon Orbital Strike", Effect = "2-Ton projectile striking at Mach 60", Cost = 200 },
                 new Favor { Name = "Bastion Fleet Carrier Deployment", Effect = "Flying carrier deploying all its air wings", Cost = 350 },
             };
 
@@ -1058,7 +1211,6 @@ namespace Planetfall
 
             }
         }
-
         private void BattleMod()
         {
             //Placeholder - Battlemod
@@ -1112,11 +1264,9 @@ namespace Planetfall
 
 
         }
-
-
         private void BattlePlanner()
         {
-
+            
             bool planning = true;
 
             while (planning)
@@ -1146,10 +1296,17 @@ namespace Planetfall
                     Console.WriteLine("Invalid input. Press any key...");
                     Console.ReadKey();
                     planning = false;
-                    continue; 
+                    continue;
                 }
 
                 var continentChoice = gameData.World[contIndex - 1];
+
+                if (continentChoice.Locked)
+                {
+                    Console.WriteLine($"{continentChoice.Name} is currently locked and cannot be contested.");
+                    Console.ReadKey();
+                    continue;
+                }
 
                 Console.WriteLine($"\n\n>{continentChoice.Name} selected");
                 Console.WriteLine("\nSelect a lane:\n");
@@ -1160,7 +1317,7 @@ namespace Planetfall
 
                 input = Console.ReadLine();
                 string laneChoice;
-                
+
 
                 switch (input)
                 {
@@ -1181,11 +1338,19 @@ namespace Planetfall
                         break;
                 }
 
+
                 if (laneChoice == null)
                 {
                     Console.WriteLine("Invalid input. Press any key...");
                     Console.ReadKey();
                     planning = false;
+                    continue;
+                }
+
+                if (gameData.LockedLanes.TryGetValue((continentChoice.Name, laneChoice), out int remaining) && remaining > 0)
+                {
+                    Console.WriteLine($"{continentChoice.Name} - {laneChoice} is currently locked and cannot be contested.");
+                    Console.ReadKey();
                     continue;
                 }
 
@@ -1197,12 +1362,12 @@ namespace Planetfall
                 for (int i = 0; i < gameData.Forces.Count; i++)
                 {
                     var Outfit = gameData.Forces[i];
-                    
 
-                    int used = gameData.OutfitDeployment.ContainsKey(Outfit.Tag) ? gameData.OutfitDeployment[Outfit.Tag] : 0; 
+
+                    int used = gameData.OutfitDeployment.ContainsKey(Outfit.Tag) ? gameData.OutfitDeployment[Outfit.Tag] : 0;
                     int max = Outfit.Spec == "Qrf" ? 2 : 1;
 
-                    
+
                     if (Outfit.Upgrades.ContainsKey("Qrf3") && Outfit.Upgrades["Qrf3"].IsBought) max++;
                     if (Outfit.Upgrades.ContainsKey("Qrf5") && Outfit.Upgrades["Qrf5"].IsBought) max++;
 
@@ -1215,7 +1380,7 @@ namespace Planetfall
                 {
 
                     planning = false;
-                continue;
+                    continue;
                 }
 
                 if (!int.TryParse(input, out int outfitIndex) || outfitIndex < 1 || outfitIndex > gameData.Forces.Count)
@@ -1252,7 +1417,7 @@ namespace Planetfall
                     if (battle.ContinentName == continentChoice.Name && battle.LaneName == laneChoice)
                     {
                         plan = battle;
-                        break; 
+                        break;
                     }
                 }
 
@@ -1261,7 +1426,7 @@ namespace Planetfall
                     plan = new Simulation
                     {
                         ContinentName = continentChoice.Name,
-                        LaneName=laneChoice
+                        LaneName = laneChoice
                     };
 
                     gameData.BattlePlans.Add(plan);
@@ -1271,36 +1436,41 @@ namespace Planetfall
                 gameData.OutfitDeployment[selectedOutfit.Tag]++;
 
                 Console.WriteLine($"\n> > >{selectedOutfit.Name} assigned to {continentChoice.Name} - {laneChoice}.");
-                Console.WriteLine("Press any key to continue...");
-                
-                Console.ReadKey();
+
+                if (gameData.Support.Count > 0 && plan.UsedFavor == null)
+                {
+                    Console.WriteLine("\nDo you want to call in a favor for this battle? (Y/N)");
+                    string favorInput = Console.ReadLine().ToLower();
+                    if (favorInput == "y")
+                    {
+                        CallSupport(plan);
+                    }
+                }
                 continue;
             }
         }
-
-
         private void CurrentPlan()
         {
             Console.WriteLine("=== Current Battle Plan ===\n");
 
-            
+
             Dictionary<string, Dictionary<string, List<Outfit>>> battleMap = new Dictionary<string, Dictionary<string, List<Outfit>>>();
 
             foreach (var sim in gameData.BattlePlans)
             {
-                
+
                 if (!battleMap.ContainsKey(sim.ContinentName))
                     battleMap[sim.ContinentName] = new Dictionary<string, List<Outfit>>();
 
-                
+
                 if (!battleMap[sim.ContinentName].ContainsKey(sim.LaneName))
                     battleMap[sim.ContinentName][sim.LaneName] = new List<Outfit>();
 
-                
+
                 battleMap[sim.ContinentName][sim.LaneName].AddRange(sim.DeployedOutfits);
             }
 
-            
+
             foreach (var continentEntry in battleMap)
             {
                 string continent = continentEntry.Key;
@@ -1324,13 +1494,59 @@ namespace Planetfall
                         }
                     }
 
-                    Console.WriteLine(); 
+                    Console.WriteLine();
                 }
             }
 
             Console.WriteLine("===========================\n");
         }
+        private void CallSupport(Simulation plan)
+        {
+            if (gameData.Support.Count == 0)
+            {
+                Console.WriteLine("No available favors.");
+                Console.ReadKey();
+                return;
+            }
 
+            Console.WriteLine("Available favors:");
+
+            Console.WriteLine("[0] Back");
+
+            for (int i = 0; i < gameData.Support.Count; i++)
+            {
+                Console.WriteLine($"[{i + 1}] {gameData.Support[i].Name} - Effect: {gameData.Support[i].Effect}");
+
+            }
+
+            Console.WriteLine("\n\nChoose Favor to call in:");
+
+            string input = Console.ReadLine();
+
+            if (input == "0")
+                return;
+
+            if (int.TryParse(input, out int index) && index > 0 && index <= gameData.Support.Count)
+            {
+                var favor = gameData.Support[index - 1];
+                plan.UsedFavor = favor;
+
+                Console.WriteLine($"Favor: {favor.Name} will be called in to help in this battle.");
+
+
+                gameData.Support.RemoveAt(index - 1);
+                Console.ReadKey();
+
+            }
+            else
+            {
+                Console.WriteLine("Invalid input! Press any key to continue...");
+                Console.ReadKey();
+            }
+
+
+
+        }
         private void UpgradeShop()
         {
             bool shopping = true;
@@ -1365,7 +1581,6 @@ namespace Planetfall
 
             }
         }
-
         private void UpgradeOutfit(Outfit outfit)
         {
             bool upgrading = true;
@@ -1406,7 +1621,6 @@ namespace Planetfall
                 }
             }
         }
-
         private void EndTurn()
         {
             //Placeholder - WARNING: Unassigned outfits
@@ -1419,57 +1633,414 @@ namespace Planetfall
             //Placeholder - Score update in GameData Class
             //Placeholder - Turn update in GameData Class
             //Placeholder - Flavortext depending on simulation results and total points
-            Console.WriteLine("PLACEHOLDER: Battle simulation, results, score and turn update, flavortext");
+            int totalEnemyOutfits = gameData.Forces.Count + gameData.Difficulty switch
+            {
+                "Easy" => 0,
+                "Normal" => 1,
+                "Hard" => 2,
+                _ => 1
+            };
+            gameData.EnemyDeployment = DistributeEnemyOutfits(totalEnemyOutfits);
+
+            foreach (var battle in gameData.BattlePlans)
+            {
+                var continent = gameData.World.First(Continent => Continent.Name == battle.ContinentName);
+
+                List<Outfit> playerOutfits = battle.DeployedOutfits;
+                List<Outfit> enemyOutfits = GenerateEnemyOutfits(continent, battle.LaneName);
+
+                int playerCE = 0;
+                int playerTEN = 0;
+                foreach (var Outfit in playerOutfits)
+                {
+                    playerCE += Outfit.ComEffVsInf + Outfit.ComEffVsArm + Outfit.ComEffVsAir;
+                    playerTEN += Outfit.TenVsInf + Outfit.TenVsArm + Outfit.TenVsAir;
+                }
+
+                int enemyCE = 0;
+                int enemyTEN = 0;
+                foreach (var Outfit in enemyOutfits)
+                {
+                    enemyCE += Outfit.ComEffVsInf + Outfit.ComEffVsArm + Outfit.ComEffVsAir;
+                    enemyTEN += Outfit.TenVsInf + Outfit.TenVsArm + Outfit.TenVsAir;
+                }
+
+
+                if (battle.UsedFavor != null)
+                {
+                    string favorName = battle.UsedFavor.Name;
+                    switch (favorName)
+                    {
+                        case "Galaxy Drop":
+                            playerCE += 10;
+                            break;
+                        case "MAX Crash":
+                            playerCE += 10;
+                            break;
+                        case "Artillery Barrage":
+                            playerCE += 10;
+                            break;
+                        case "Fighter Wing Deployment":
+                            playerCE += 15;
+                            break;
+                        case "Railcannon Orbital Strike":
+                            enemyTEN = 0;
+                            break;
+                        case "Bastion Fleet Carrier Deployment":
+                            enemyTEN = 0;
+                            playerCE = 999;
+                            break;
+                    }
+
+                    gameData.Support.Remove(battle.UsedFavor);
+                }
+
+                int playerDamageTaken = Math.Max(0, enemyCE - playerTEN);
+                int enemyDamageTaken = Math.Max(0, playerCE - enemyTEN);
+
+                if (enemyDamageTaken > 10)
+                {
+                    gameData.DestroyedEnemy = true;
+                }
+
+                bool playerWins = enemyOutfits.Count == 0 || playerDamageTaken < enemyDamageTaken;
+
+
+                foreach (var Outfit in playerOutfits)
+                {
+                    Outfit.XP += playerWins ? 20 : 10;
+                    if (Outfit.XP >= 100)
+                    {
+                        Outfit.Level++;
+                        Outfit.XP = 0;
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"{Outfit.Name} ({Outfit.Tag}) has reached Level {Outfit.Level}!");
+                        Console.ResetColor();
+                    }
+                }
+
+
+                if (playerWins)
+                {
+                    IncreaseLaneProgress(continent, battle.LaneName);
+
+                    int progress = GetLaneProgress(continent, battle.LaneName);
+                    if (progress >= 5)
+                    {
+                        LockLane(continent, battle.LaneName, 4);
+                        SetLaneProgress(continent, battle.LaneName, 3);
+                    }
+                }
+                else
+                {
+                    DecreaseLaneProgress(continent, battle.LaneName);
+
+                    int progress = GetLaneProgress(continent, battle.LaneName);
+                    if (progress <= 0)
+                    {
+                        LockLane(continent, battle.LaneName, 4);
+                        SetLaneProgress(continent, battle.LaneName, 1);
+                    }
+                }
+
+
+
+                Console.WriteLine($"Battle on {continent.Name} - {battle.LaneName}: {(playerWins ? "Victory" : "Defeat")}\n");
+            }
+
+            foreach (var continent in gameData.World)
+            {
+                if (continent.ProgressLaneNorth >= 5 && continent.ProgressLaneCentral >= 5 && continent.ProgressLaneSouth >= 5 && !continent.Locked)
+                {
+                    Console.WriteLine($"{continent.Name} is now fully under your control and locked for 6 turns!");
+                    continent.Locked = true;
+                    continent.LockedTurnsRemaining = 6;
+                    gameData.Score += 50;
+                }
+            }
+
+            UpdateVictoryPoints();
+            AwardNanites();
+
+            if (gameData.ActiveObjective != null && gameData.ActiveObjective.Condition(gameData))
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($"\nObjective \"{gameData.ActiveObjective.Name}\" completed!");
+                Console.ResetColor();
+
+                gameData.Nanites += 100;
+                gameData.Score += 25;
+
+                Console.WriteLine("Reward: +100 Nanites, +25 Score.");
+                gameData.ActiveObjective = null;
+            }
+
+            gameData.BattlePlans.Clear();
+            gameData.OutfitDeployment.Clear();
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
+            UpdateLaneLocks();
+            UpdateContinentLocks();
+            gameData.CurrentTurn++;
+            CheckEndGameConditions();
             SituationRoom();
         }
-
-        private void CallSupport()
+        private Dictionary<(string continent, string lane), List<Outfit>> DistributeEnemyOutfits(int totalEnemyOutfits)
         {
-            if (gameData.Support.Count == 0)
+            Dictionary<(string, string), List<Outfit>> deployment = new();
+            List<Outfit> pool = new List<Outfit>(gameData.EnemyPool);
+            Random rng = new();
+
+
+            List<(string continent, string lane)> lanes = new();
+            foreach (var continent in gameData.World)
             {
-                Console.WriteLine("No available favors.");
-                Console.ReadKey();
-                return;
-            }
+                if (continent.Locked) continue;
 
-            Console.WriteLine("Available favors:");
-
-            for (int i = 0; i < gameData.Support.Count; i++)
-            {
-                Console.WriteLine($"[{i + 1}] {gameData.Support[i].Name} - Effect: {gameData.Support[i].Effect}");
-
-            }
-
-            Console.WriteLine("\n\nChoose Favor to call in:");
-            string input = Console.ReadLine();
-
-            if (int.TryParse(input, out int index) && index > 0 && index <= gameData.Support.Count)
-            {
-                var favor = gameData.Support[index - 1];
-                Console.WriteLine($"Favor: {favor.Name} will be called in to help in this battle.");
-
-
-                //PLACEHOLDER Effect
-
-
-                gameData.Support.RemoveAt(index - 1);
-                Console.ReadKey();
-
+                if (!gameData.LockedLanes.ContainsKey((continent.Name, "North")))
+                    lanes.Add((continent.Name, "North"));
+                if (!gameData.LockedLanes.ContainsKey((continent.Name, "Central")))
+                    lanes.Add((continent.Name, "Central"));
+                if (!gameData.LockedLanes.ContainsKey((continent.Name, "South")))
+                    lanes.Add((continent.Name, "South"));
             }
 
 
+            for (int i = 0; i < totalEnemyOutfits && pool.Count > 0; i++)
+            {
+                int laneIndex = rng.Next(lanes.Count);
+                var lane = lanes[laneIndex];
+
+                if (!deployment.ContainsKey(lane))
+                    deployment[lane] = new List<Outfit>();
+
+                int outfitIndex = rng.Next(pool.Count);
+                deployment[lane].Add(pool[outfitIndex]);
+                pool.RemoveAt(outfitIndex);
+            }
+
+            return deployment;
+        }
+        private List<Outfit> GenerateEnemyOutfits(Continent continent, string lane)
+        {
+            var key = (continent.Name, lane);
+            if (gameData.EnemyDeployment.ContainsKey(key))
+                return gameData.EnemyDeployment[key];
+            else
+                return new List<Outfit>();
+        }
+        private void LockLane(Continent continent, string lane, int duration)
+        {
+            gameData.LockedLanes[(continent.Name, lane)] = duration;
+            Console.WriteLine($"{continent.Name} - {lane} has been locked down. Further combat operations are unavailable until further notice.");
+        }
+        private int GetLaneProgress(Continent continent, string lane)
+        {
+            switch (lane)
+            {
+                case "North":
+                    return continent.ProgressLaneNorth;
+                case "Central":
+                    return continent.ProgressLaneCentral;
+                case "South":
+                    return continent.ProgressLaneSouth;
+                default:
+                    return 0;
+            }
+        }
+        public void SetLaneProgress(Continent continent, string lane, int value)
+        {
+            switch (lane)
+            {
+                case "North":
+                    continent.ProgressLaneNorth = value;
+                    break;
+                case "Central":
+                    continent.ProgressLaneCentral = value;
+                    break;
+                case "South":
+                    continent.ProgressLaneSouth = value;
+                    break;
+            }
 
         }
+        private void IncreaseLaneProgress(Continent continent, string lane)
+        {
+            int progress = GetLaneProgress(continent, lane);
+            SetLaneProgress(continent, lane, Math.Min(progress + 1, 5));
+        }
+        private void DecreaseLaneProgress(Continent continent, string lane)
+        {
+            int progress = GetLaneProgress(continent, lane);
+            SetLaneProgress(continent, lane, Math.Max(progress - 1, 0));
+        }
+        private void UpdateLaneLocks()
+        {
+            var updated = new Dictionary<(string, string), int>();
+
+            foreach (var entry in gameData.LockedLanes)
+            {
+                int newTurns = entry.Value - 1;
+                if (newTurns > 0)
+                {
+                    updated[entry.Key] = newTurns;
+                }
+                else
+                {
+                    Console.WriteLine($"{entry.Key.Item1} - {entry.Key.Item2} is now unlocked. Push them back!");
+                }
+            }
+
+            gameData.LockedLanes = updated;
+        }
+        private void UpdateContinentLocks()
+        {
+            foreach (var continent in gameData.World)
+            {
+                if (continent.Locked)
+                {
+                    continent.LockedTurnsRemaining--;
+
+                    if (continent.LockedTurnsRemaining <= 0)
+                    {
+                        continent.Locked = false;
+                        Console.WriteLine($"{continent.Name} has been unlocked. Resume combat operations!");
+
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Turns until {continent.Name} is unlocked: {continent.LockedTurnsRemaining}");
+                    }
+                }
+            }
+        }
+        private void AwardNanites()
+        {
+            int nanitesPerBase = 10;
+            int totalBasesControlled = 0;
+            float modifier = gameData.Difficulty switch
+            {
+                "Easy" => 1.2f,
+                "Normal" => 1.0f,
+                "Hard" => 0.8f,
+                _ => 1.0f
+            };
 
 
+            foreach (var continent in gameData.World)
+            {
+                int totalProgress = continent.ProgressLaneNorth + continent.ProgressLaneCentral + continent.ProgressLaneSouth;
+                totalBasesControlled += totalProgress;
+            }
+            int nanitesGained = (int)(totalBasesControlled * nanitesPerBase * modifier);
+
+            gameData.Nanites += nanitesGained;
+
+            Console.WriteLine($"You have recieved {nanitesGained} Nanites from held territory.");
+        }
+        private void UpdateVictoryPoints()
+        {
+            int previousScore = gameData.Score;
+            int turnPoints = 0;
+
+            foreach (var continent in gameData.World)
+            {
+                turnPoints += continent.ProgressLaneNorth;
+                turnPoints += continent.ProgressLaneCentral;
+                turnPoints += continent.ProgressLaneSouth;
+
+
+                turnPoints -= CountGhostCaps(continent, "North");
+                turnPoints -= CountGhostCaps(continent, "Central");
+                turnPoints -= CountGhostCaps(continent, "South");
+            }
+
+            gameData.Score += turnPoints;
+            int diff = gameData.Score - previousScore;
+
+            if (diff >= 0)
+                Console.WriteLine($"You gained {diff} Victory Points this turn.");
+            else
+                Console.WriteLine($"You lost {Math.Abs(diff)} Victory Points this turn.");
+        }
+
+        private Dictionary<(string continent, string lane), int> ghostCapCounter = new();
+        private int CountGhostCaps(Continent continent, string lane)
+        {
+            var key = (continent.Name, lane);
+
+            bool playerDefended = gameData.BattlePlans.Any(b => b.ContinentName == continent.Name && b.LaneName == lane);
+            int progress = GetLaneProgress(continent, lane);
+
+            if (progress == 0 && !playerDefended)
+            {
+                if (!ghostCapCounter.ContainsKey(key))
+                    ghostCapCounter[key] = 1;
+                else
+                    ghostCapCounter[key]++;
+
+                if (ghostCapCounter[key] >= 2)
+                {
+                    Console.WriteLine($"Penalty: {continent.Name} - {lane} was ignored {ghostCapCounter[key]} times.");
+                    return 3;
+                }
+            }
+            else
+            {
+                if (ghostCapCounter.ContainsKey(key))
+                    ghostCapCounter[key] = 0;
+            }
+
+            return 0;
+        }
+        private void CheckEndGameConditions()
+        {
+            bool allContinentLocked = gameData.World.All(c => c.Locked);
+            bool maxTurnsReached = gameData.CurrentTurn >= gameData.MaxTurns;
+
+            if (allContinentLocked || maxTurnsReached)
+            {
+                Console.WriteLine("\n--------------------");
+                Console.WriteLine("Mission Complete!");
+
+                int finalScore = gameData.Score;
+
+                if (allContinentLocked)
+                {
+                    finalScore *= 2;
+                    Console.WriteLine("All continents have been conquered! Final score doubled.");
+                }
+
+                Console.WriteLine($"Final Score: {finalScore}");
+                Console.WriteLine("--------------------\n");
+
+                Console.WriteLine("Press any key to return to main menu...");
+                Console.ReadKey();
+                MainMenu();
+            }
+        }
 
         private void Help()
         {
             Console.Clear();
-            //Placeholder - Help
-            Console.WriteLine("PLACEHOLDER: How to play, outfits, resources, Lore");
+            Console.WriteLine("[0] Back");
+            Console.WriteLine("[1] How to play");
+            Console.WriteLine("[2] Outfits");
+            Console.WriteLine("[3] Lore");
+            string input = Console.ReadLine();
+
+            switch (input)
+            {
+                case "1"://PLACEHOLDER
+                    break;
+                case "2":
+                    break;
+                case "3":
+                    break;
+                default:
+                    break;
+            }
+
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
 

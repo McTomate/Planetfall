@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Sources;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.IO;
 
 namespace Planetfall
 {
@@ -18,17 +24,12 @@ namespace Planetfall
         public int TEN_All { get; set; }
         public bool CombatReady => HP > 0;
         public int Uses { get; set; }
-
         public int ComEffVsInf { get; set; }
         public int ComEffVsArm { get; set; }
         public int ComEffVsAir { get; set; }
-
-
         public int TenVsInf { get; set; }
         public int TenVsArm { get; set; }
-        public int TenVsAir { get; set; }
-
-        // too much clutter --> create Dictionary
+        public int TenVsAir { get; set; }        
         public string Spec { get; set; } = null;
         public void UpgradeForSale()
         {
@@ -45,7 +46,6 @@ namespace Planetfall
                 
             }
         }
-
         private void DisableOtherSpecs()
         {
             var allSpecs = new[] { "Inf", "Arm", "Air", "Qrf" };
@@ -69,7 +69,6 @@ namespace Planetfall
                 Upgrades["Lvl3"].IsBought = false;
             }
         }
-
         private void EnableSpecUpgrades()
         {
             foreach (var upgrade in Upgrades.Values)
@@ -80,17 +79,13 @@ namespace Planetfall
 
             }
         }
-
         public void ChooseSpec(string spec)
         {
             Spec = spec;
             DisableOtherSpecs();
             EnableSpecUpgrades();
         }
-
-
         public Dictionary<string, Upgrade> Upgrades { get; set; } = new();
-
         public Outfit()
         {
             Upgrades["Lvl1"] = new Upgrade("Lvl1", 1, 25);
